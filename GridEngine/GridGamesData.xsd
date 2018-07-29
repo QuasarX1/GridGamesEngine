@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--<xs:schema id="GridGamesData"
+    targetNamespace="http://tempuri.org/GridGamesData.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/GridGamesData.xsd"
+    xmlns:mstns="http://tempuri.org/GridGamesData.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>-->
+<xs:schema id="GridGamesData"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:complexType name="character">
+    <xs:attribute name="char" type="xs:string" use="required" />
+    <xs:attribute name="color" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="entity">
+    <xs:all>
+      <xs:element name="indicator" type="character" />
+    </xs:all>
+
+    <xs:attribute name="type" type="xs:string" use="required" />
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="start_x" type="xs:string" use="required" />
+    <xs:attribute name="start_y" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="string_data">
+    <xs:attribute name="data" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  <xs:element name="game">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="area" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="empty_char" type="character" />
+
+              <xs:element name="background">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="row" minOccurs="1" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="display_char" type="character" minOccurs="1" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="entities">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="entity" type="entity" maxOccurs="unbounded" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="entry_points">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="point" minOccurs="1" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="x" type="xs:integer" use="required" />
+                        <xs:attribute name="y" type="xs:integer" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+
+            <xs:attribute name="type" type="xs:string" use="required" />
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="width" type="xs:integer" use="required" />
+            <xs:attribute name="height" type="xs:integer" use="required" />
+            <xs:attribute name="border" type="xs:boolean" use="required" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="player" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="indicator" type="character" />
+
+              <xs:element name="collisions">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="type_collision" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="string_param" type="string_data" />
+                        </xs:all>
+
+                        <xs:attribute name="type" type="xs:string" use="required" />
+                        <xs:attribute name="method" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="name_collision" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="string_param" type="string_data" />
+                        </xs:all>
+
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="method" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="id_collision" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="string_param" type="string_data" />
+                        </xs:all>
+
+                        <xs:attribute name="id" type="xs:integer" use="required" />
+                        <xs:attribute name="method" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="actions">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="action" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="key" type="xs:string" use="required" />
+                        <xs:attribute name="method" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+            
+            <xs:attribute name="type" type="xs:string" fixed="Player" use="required" />
+            <xs:attribute name="name" type="xs:string" fixed="Player" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+
+      <xs:attribute name="name" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
