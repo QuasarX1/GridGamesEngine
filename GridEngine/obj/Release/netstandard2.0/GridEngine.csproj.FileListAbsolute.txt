@@ -1,9 +1,0 @@
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\bin\Release\netstandard2.0\GridEngine.deps.json
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\bin\Release\netstandard2.0\GridEngine.dll
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\bin\Release\netstandard2.0\GridEngine.pdb
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\obj\Release\netstandard2.0\GridEngine.csprojAssemblyReference.cache
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\obj\Release\netstandard2.0\GridEngine.csproj.CoreCompileInputs.cache
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\obj\Release\netstandard2.0\GridEngine.AssemblyInfoInputs.cache
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\obj\Release\netstandard2.0\GridEngine.AssemblyInfo.cs
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\obj\Release\netstandard2.0\GridEngine.dll
-C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\GridEngine\obj\Release\netstandard2.0\GridEngine.pdb
