@@ -1,0 +1,1115 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuasarCode</name>
+    </assembly>
+    <members>
+        <member name="T:QuasarCode.Tools.Searching.BinarySearch">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.Searching.BinarySearch.Search``1(System.Collections.Generic.List{``0},``0)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="container"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Tools.Sorting.BubbleSort">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.Sorting.BubbleSort.Sort``1(System.Collections.Generic.List{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Tools.Sorting.InsertionSort">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.Sorting.InsertionSort.Sort``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Tools.Sorting.InsertionSort.Sort``1(``0[])">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="array"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Tools.Systems.Generators.CountGenerator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Generators.CountGenerator.NumberOfValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Generators.CountGenerator.StartValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Generators.CountGenerator.MaxValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Generators.CountGenerator.CurrentValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Generators.CountGenerator.AtStart">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Generators.CountGenerator.AtEnd">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Generators.CountGenerator.#ctor(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="noOfValues"></param>
+            <param name="maxValue"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Generators.CountGenerator.#ctor(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="maxValues"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Generators.CountGenerator.#ctor(System.Int32[],System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="startValues"></param>
+            <param name="maxValues"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Generators.CountGenerator.Next">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Generators.CountGenerator.Last">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.Dimentions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.DimentionSizes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1._Grid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.Grid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.#ctor(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="dimentions"></param>
+            <param name="size"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.#ctor(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="dimentionSizes"></param>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.Item(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="coordinate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.Extractor(System.Object,System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="container"></param>
+            <param name="ordinates"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.Inserter(System.Object@,System.Int32[],`0)">
+            <summary>
+            
+            </summary>
+            <param name="container"></param>
+            <param name="ordinates"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.CreateGraph(System.Int32[],System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="startLocation"></param>
+            <param name="goal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.ManhattonDistance(System.Int32[],System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.DimentionalGrid`1.ToString">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Tools.Systems.Grids.GridNavigator`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:QuasarCode.Tools.Systems.Grids.GridNavigator`1.Position">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.Systems.Grids.GridNavigator`1.Grid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.GridNavigator`1.#ctor(QuasarCode.Tools.Systems.Grids.DimentionalGrid{`0}@,System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="grid"></param>
+            <param name="position"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.GridNavigator`1.move(QuasarCode.Maths.Vector)">
+            <summary>
+            
+            </summary>
+            <param name="vector"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.Systems.Grids.GridNavigator`1.move(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="newPosition"></param>
+        </member>
+        <member name="T:QuasarCode.Tools.Delegates.validatorDeligate`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Tools.DataStructures.Graphs.Graph">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.Graph.Nodes">
+            <summary>
+            /
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.Graph.Edges">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Graph.#ctor(System.String,System.Double,System.Int32[])">
+            <summary>
+            Creates a new graph with a starting node
+            </summary>
+            <param name="name">Name of the starting node</param>
+            <param name="heuristic">Heuristic of the starting node</param>
+            <param name="position">Optional implementation location for context</param>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Graph.#ctor(System.Collections.Generic.List{QuasarCode.Tools.DataStructures.Graphs.Node},System.Collections.Generic.List{QuasarCode.Tools.DataStructures.Graphs.Edge})">
+            <summary>
+            Creates a new graph using lists of pre-created nodes and edges
+            </summary>
+            <param name="nodes">List of nodes</param>
+            <param name="edges">List of edges</param>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Graph.GetNode(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Graph.AddNode(System.String,System.Double,System.String,System.Double,System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="heuristic"></param>
+            <param name="connection"></param>
+            <param name="weighting"></param>
+            <param name="position"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Graph.AddEdge(System.String,System.String,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="weight"></param>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Graph.Path(System.String,System.String)">
+            <summary>
+            A* pathfinding between two nodes
+            </summary>
+            <param name="from">Starting node</param>
+            <param name="to">Finnishing node</param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Tools.DataStructures.Graphs.Node">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.DataStructures.Graphs.Node.name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.DataStructures.Graphs.Node.heuristic">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.DataStructures.Graphs.Node.location">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Node.#ctor(System.String,System.Double,System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="heuristic"></param>
+            <param name="location"></param>
+        </member>
+        <member name="T:QuasarCode.Tools.DataStructures.Graphs.Edge">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.DataStructures.Graphs.Edge.from">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.DataStructures.Graphs.Edge.to">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Tools.DataStructures.Graphs.Edge.weight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.Edge.#ctor(System.String,System.String,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="weight"></param>
+        </member>
+        <member name="T:QuasarCode.Tools.DataStructures.Graphs.PathData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.PathData.name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.PathData.visited">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.PathData.distance">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.PathData.heuristic">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.PathData.f">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Tools.DataStructures.Graphs.PathData.from">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.DataStructures.Graphs.PathData.#ctor(QuasarCode.Tools.DataStructures.Graphs.Node,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="node"></param>
+            <param name="start"></param>
+        </member>
+        <member name="T:QuasarCode.Tools.Shortcuts">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Tools.Shortcuts.argument(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Games.Cards.DeckOfCards">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.DeckOfCards.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="joker"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.DeckOfCards.DealableList">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.DeckOfCards.Deal(System.Collections.Generic.List{QuasarCode.Games.Cards.SetOfCards}@)">
+            <summary>
+            
+            </summary>
+            <param name="hands"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.DeckOfCards.Deal(System.Collections.Generic.List{QuasarCode.Games.Cards.SetOfCards}@,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="hands"></param>
+            <param name="cardsPerHand"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.DeckOfCards.Deal(System.Collections.Generic.List{QuasarCode.Games.Cards.SetOfCards}@,System.Int32,QuasarCode.Games.Cards.StackOfCards@)">
+            <summary>
+            
+            </summary>
+            <param name="hands"></param>
+            <param name="cardsPerHand"></param>
+            <param name="stack"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.DeckOfCards.Deal(System.Collections.Generic.List{QuasarCode.Games.Cards.SetOfCards}@,System.Int32,System.Collections.Generic.List{QuasarCode.Games.Cards.StackOfCards}@)">
+            <summary>
+            
+            </summary>
+            <param name="hands"></param>
+            <param name="cardsPerHand"></param>
+            <param name="stacks"></param>
+        </member>
+        <member name="T:QuasarCode.Games.Cards.PlayingCard">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Cards.PlayingCard.AllowedValues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Cards.PlayingCard.AllowedSuits">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Cards.PlayingCard.Value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Cards.PlayingCard.Suit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.PlayingCard.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="suit"></param>
+        </member>
+        <member name="T:QuasarCode.Games.Cards.SetOfCards">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Cards.SetOfCards.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.SetOfCards.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.SetOfCards.Pop(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Games.Cards.StackOfCards">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Cards.StackOfCards.Shuffle">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:QuasarCode.Games.Dice.Dice">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Dice.Dice.Sides">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Games.Dice.Dice.randomiser">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.Dice.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="sides"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.Dice.#ctor(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="seed"></param>
+            <param name="sides"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.Dice.MultipleDice(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="sides"></param>
+            <param name="noOfDice"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.Dice.MultipleDice(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="sides"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.Dice.MultipleDice(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="sides"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.Dice.Roll">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Games.Dice.DiceCup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Dice.DiceCup.AllDice">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.DiceCup.#ctor(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="sides"></param>
+            <param name="noOfDice"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.DiceCup.#ctor(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="sides"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.DiceCup.#ctor(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="sides"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Dice.DiceCup.Roll">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Games.Systems.Elo.EloPlayer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Systems.Elo.EloPlayer.Rating">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Systems.Elo.EloPlayer.K">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Systems.Elo.EloPlayer.KChange">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Elo.EloPlayer.#ctor(System.Int32,System.Collections.Generic.Dictionary{System.Int32,System.Double})">
+            <summary>
+            
+            </summary>
+            <param name="rating"></param>
+            <param name="kChange"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Elo.EloPlayer.EstimateScore(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="oponentRating"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Elo.EloPlayer.UpdateRating(System.Double,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="score"></param>
+            <param name="oponentRating"></param>
+        </member>
+        <member name="T:QuasarCode.Games.Systems.Elo.EloPlayersCollection">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Systems.Elo.EloPlayersCollection.KChange">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Elo.EloPlayersCollection.#ctor(System.Collections.Generic.Dictionary{System.Int32,System.Double})">
+            <summary>
+            
+            </summary>
+            <param name="kChange"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Elo.EloPlayersCollection.AddNew(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="rating"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Elo.EloPlayersCollection.Sort(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="decending"></param>
+        </member>
+        <member name="T:QuasarCode.Games.Systems.Ladder`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Ladder`1.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Ladder`1.Pair(System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="P1_Position"></param>
+            <param name="P2_Position"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Games.Systems.Ladder`1.Result(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="P1_Position"></param>
+            <param name="P2_Position"></param>
+            <param name="winner"></param>
+        </member>
+        <member name="T:QuasarCode.Games.Spinners.Spinner">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Games.Spinners.Spinner.Values">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:QuasarCode.Games.Spinners.Spinner.Randomiser">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Games.Spinners.Spinner.#ctor(System.Collections.Generic.Dictionary{System.String,System.Int32})">
+            <summary>
+            
+            </summary>
+            <param name="values"></param>
+        </member>
+        <member name="M:QuasarCode.Games.Spinners.Spinner.Spin">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.IO.Validators.InputValidator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.IsChar(System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.IsAlpha(System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.IsAlpha(System.Char,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.IsInt(System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_NumRange(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="bound"></param>
+            <param name="moreThan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_NumRange(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="minValue"></param>
+            <param name="maxValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_Double(System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_NumRange(System.Double,System.Double,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="bound"></param>
+            <param name="moreThan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_NumRange(System.Double,System.Double,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="minValue"></param>
+            <param name="maxValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_Decimal(System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_NumRange(System.Decimal,System.Decimal,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="bound"></param>
+            <param name="moreThan"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.Validate_NumRange(System.Decimal,System.Decimal,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <param name="minValue"></param>
+            <param name="maxValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.IsOp(System.Char,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.Validators.InputValidator.IsEven``1(``0)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.IO.MathsInput">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:QuasarCode.IO.MathsInput.mostSimpleSections">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.IO.MathsInput.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+        </member>
+        <member name="T:QuasarCode.IO.StreamOperations">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.IO.StreamOperations.Print(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="text"></param>
+            <param name="end"></param>
+        </member>
+        <member name="M:QuasarCode.IO.StreamOperations.Print(System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="text"></param>
+            <param name="end"></param>
+        </member>
+        <member name="M:QuasarCode.IO.StreamOperations.Input(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.StreamOperations.Input(System.String,QuasarCode.Tools.Delegates.validatorDeligate{System.String},System.String,System.Collections.Generic.KeyValuePair{System.String,System.Object}[])">
+            <summary>
+            
+            </summary>
+            <param name="text"></param>
+            <param name="validator"></param>
+            <param name="errorMessage"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.IO.StreamOperations.Option(System.Collections.Generic.List{System.String},System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="options"></param>
+            <param name="message"></param>
+            <param name="displayInput"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Maths.Matrix`1">
+            <summary>
+            Represents a mathmatical matrix.
+            Capable of storing non-numerical data.
+            Indexed [row from top, column from left]
+            </summary>
+            <typeparam name="T">Datatype of contence</typeparam>
+        </member>
+        <member name="P:QuasarCode.Maths.Matrix`1.Items">
+            <summary>
+            The matrix data.
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Maths.Matrix`1.Width">
+            <summary>
+            The width of the matrix i.e. the number of items in a row or the number of columns.
+            </summary>
+        </member>
+        <member name="P:QuasarCode.Maths.Matrix`1.Height">
+            <summary>
+            The height of the matrix i.e. the number of items in a column or the number of rows.
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Creates a blank matrix with specified height and width
+            </summary>
+            <param name="height">Number of rows</param>
+            <param name="width">Number of columns</param>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.#ctor(QuasarCode.Maths.Matrix{System.Object},System.Type,System.Func{System.Object,System.Type,`0})">
+            <summary>
+            Creates a matrix using annother matrix and a deligate function which is applied to all elements
+            </summary>
+            <param name="originalMatrix">The template matrix</param>
+            <param name="datatype">The origanal matrixes datatype</param>
+            <param name="deligate">A function that takes on object and a datatype and returns an object of type "T"</param>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.#ctor(System.Int32,System.Int32,System.Random@,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Creates an integer matrix with a specified height and width using a random integer for each position
+            </summary>
+            <param name="height">Number of rows</param>
+            <param name="width">Number of columns</param>
+            <param name="randomiser">Instance of a "System.Random" object</param>
+            <param name="lowerBound">Optional lower bound for random values</param>
+            <param name="upperBound">Optional upper bound for random values</param>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.#ctor(`0[0:,0:])">
+            <summary>
+            Creates a matrix using a pre-existing 2D array
+            </summary>
+            <param name="items"></param>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.Transpose">
+            <summary>
+            Transposes the matrix i.e swiches the rows and columns.
+            </summary>
+            <returns>A matrix containing values equivilant to the transposed form of the input matrix.</returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.Dot(QuasarCode.Maths.Matrix{`0})">
+            <summary>
+            Returns the dot (scalar) product of this matrix and annother
+            </summary>
+            <param name="b">Second matrix</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Addition(QuasarCode.Maths.Matrix{`0},QuasarCode.Maths.Matrix{`0})">
+            <summary>
+            
+            </summary>
+            <param name="a">Matrix a</param>
+            <param name="b">Matrix b</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Addition(QuasarCode.Maths.Matrix{`0},`0)">
+            <summary>
+            
+            </summary>
+            <param name="a">Matrix</param>
+            <param name="b">Scalar</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Addition(`0,QuasarCode.Maths.Matrix{`0})">
+            <summary>
+            
+            </summary>
+            <param name="a">Scalar</param>
+            <param name="b">Matrix</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Subtraction(QuasarCode.Maths.Matrix{`0},QuasarCode.Maths.Matrix{`0})">
+            <summary>
+            
+            </summary>
+            <param name="a">Matrix a</param>
+            <param name="b">Matrix b</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Subtraction(QuasarCode.Maths.Matrix{`0},`0)">
+            <summary>
+            
+            </summary>
+            <param name="a">Matrix</param>
+            <param name="b">Scalar</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Subtraction(`0,QuasarCode.Maths.Matrix{`0})">
+            <summary>
+            
+            </summary>
+            <param name="a">Scalar</param>
+            <param name="b">Matrix</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Multiply(QuasarCode.Maths.Matrix{`0},QuasarCode.Maths.Matrix{`0})">
+            <summary>
+            
+            </summary>
+            <param name="a">Matrix a</param>
+            <param name="b">Matrix b</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Multiply(`0,QuasarCode.Maths.Matrix{`0})">
+            <summary>
+            
+            </summary>
+            <param name="a">Scalar</param>
+            <param name="b">Matrix</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.op_Multiply(QuasarCode.Maths.Matrix{`0},`0)">
+            <summary>
+            
+            </summary>
+            <param name="a">Matrix</param>
+            <param name="b">Scalar</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.ToString">
+            <summary>
+            Returns a string representation of the matrix with elements seperated by a " " (single space) and rows seperated by a "\n" (new line).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuasarCode.Maths.Matrix`1.GetDimentions">
+            <summary>
+            Returns a tuple representing the matrix dimentions in the format (rows, columns).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.Maths.Vector">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:QuasarCode.Maths.Vector.#ctor(System.Int32[])">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:QuasarCode.Maths.Vector.Magnitude">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuasarCode.RandomItemPicker`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:QuasarCode.RandomItemPicker`1.PickItem(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            
+            </summary>
+            <param name="collection"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

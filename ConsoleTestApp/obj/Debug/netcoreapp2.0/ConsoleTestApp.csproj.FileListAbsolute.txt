@@ -1,0 +1,14 @@
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\obj\Debug\netcoreapp2.0\ConsoleTestApp.csproj.CoreCompileInputs.cache
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\obj\Debug\netcoreapp2.0\ConsoleTestApp.AssemblyInfoInputs.cache
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\obj\Debug\netcoreapp2.0\ConsoleTestApp.AssemblyInfo.cs
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\bin\Debug\netcoreapp2.0\ConsoleTestApp.deps.json
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\bin\Debug\netcoreapp2.0\ConsoleTestApp.runtimeconfig.json
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\bin\Debug\netcoreapp2.0\ConsoleTestApp.runtimeconfig.dev.json
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\bin\Debug\netcoreapp2.0\ConsoleTestApp.dll
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\bin\Debug\netcoreapp2.0\ConsoleTestApp.pdb
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\obj\Debug\netcoreapp2.0\ConsoleTestApp.csproj.CopyComplete
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\obj\Debug\netcoreapp2.0\ConsoleTestApp.dll
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\obj\Debug\netcoreapp2.0\ConsoleTestApp.pdb
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\bin\Debug\netcoreapp2.0\ConsoleGridEngine.dll
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\bin\Debug\netcoreapp2.0\ConsoleGridEngine.pdb
+C:\Users\chris\OneDrive\Documents\All Documents\Programming\_MyProjects\GridBasedGamesEngine\ConsoleTestApp\obj\Debug\netcoreapp2.0\ConsoleTestApp.csprojAssemblyReference.cache
