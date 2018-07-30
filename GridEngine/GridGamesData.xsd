@@ -6,14 +6,13 @@
     xmlns:mstns="GridEngine"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
-  <xs:complexType name="character">
-    <xs:attribute name="char" type="xs:string" use="required" />
-    <xs:attribute name="color" type="xs:string" use="required" />
+  <xs:complexType name="image">
+    <xs:attribute name="name" type="xs:string" use="required" />
   </xs:complexType>
 
   <xs:complexType name="entity">
     <xs:all>
-      <xs:element name="indicator" type="character" />
+      <xs:element name="image" type="image" />
     </xs:all>
 
     <xs:attribute name="type" type="xs:string" use="required" />
@@ -32,7 +31,7 @@
         <xs:element name="area" minOccurs="1" maxOccurs="unbounded">
           <xs:complexType>
             <xs:all>
-              <xs:element name="empty_char" type="character" />
+              <xs:element name="empty_space_image" type="image" />
 
               <xs:element name="background">
                 <xs:complexType>
@@ -40,7 +39,7 @@
                     <xs:element name="row" minOccurs="1" maxOccurs="unbounded">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="display_char" type="character" minOccurs="1" maxOccurs="unbounded" />
+                          <xs:element name="background_image_element" type="image" minOccurs="1" maxOccurs="unbounded" />
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
@@ -82,7 +81,7 @@
         <xs:element name="player" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:all>
-              <xs:element name="indicator" type="character" />
+              <xs:element name="image" type="image" />
 
               <xs:element name="collisions">
                 <xs:complexType>
