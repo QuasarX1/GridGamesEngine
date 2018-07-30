@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="GridGamesData"
-    targetNamespace="https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine"
+    targetNamespace="GridEngine"
     elementFormDefault="qualified"
-    xmlns="https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine"
-    xmlns:mstns="https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine"
+    xmlns="GridEngine"
+    xmlns:mstns="GridEngine"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
   <xs:complexType name="character">
