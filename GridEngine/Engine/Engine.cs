@@ -15,7 +15,6 @@ namespace GridEngine.Engine
 {
     public sealed class Engine
     {
-        // Use of ConsoleKey
         public Dictionary<Keys, Responce> Actions { get; private set; }
 
         public IArea ActiveArea { get; private set; }
@@ -29,14 +28,12 @@ namespace GridEngine.Engine
         public IPlayer Player { get; private set; }
 
         private string PreviousName;
-
-        // Use of ConsoleKey
+        
         public List<Keys> ReservedKeys { get; private set; }
         
 
         public Engine(XmlDocument gameData)
         {
-            PreviousName = Console.Title;
             Console.Title = gameData.DocumentElement.Attributes["name"].Value;
             ConsoleWindowSettings = new int[4] { Console.WindowWidth, Console.WindowHeight, Console.WindowTop, Console.WindowLeft };
 
