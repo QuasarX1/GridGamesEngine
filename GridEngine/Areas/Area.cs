@@ -5,20 +5,23 @@ using System.Xml;
 
 using GridEngine.Deligates;
 using GridEngine.Entities;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Areas
 {
     public class Area: IArea
     {
-        //public DisplayChar?[,] Grid { get; protected set; }
         public string[,] Grid { get; protected set; }
 
-        public bool Border { get; protected set; }
+        private Queue<Tuple<int[], int[]>> Updates;
+
+        public Tuple<int[], int[]> NextUpdate { get { return Updates.Dequeue(); } }
+
+        //public bool Border { get; protected set; }
 
         public Dictionary<string, int[]> EntryPoints { get; protected set; }
 
-        public DisplayChar EmptyChar { get; protected set; }
+        public string EmptySpaceImage { get; protected set; }
 
         public bool Focus { get; protected set; }
 
@@ -30,56 +33,17 @@ namespace GridEngine.Areas
 
         public string PlayerName { get; protected set; }
 
-
-        //public Area(int width, int height, bool border = false, DisplayChar? emptyChar = null)
-        //{
-        //    if (emptyChar == null)
-        //    {
-        //        emptyChar = new DisplayChar { Char = ' ', Colour = ConsoleColor.White };
-        //    }
-            
-        //    Border = border;
-
-        //    if (Border == true)
-        //    {
-        //        width += 2;
-        //        height += 2;
-        //    }
-
-        //    Grid = new DisplayChar?[width, height];
-
-        //    EmptyChar = (DisplayChar)emptyChar;
-
-        //    Focus = false;
-
-        //    Entities = new Dictionary<string, IEntity>();
-
-        //    EntryPoints = new Dictionary<string, int[]>();
-
-        //    for (int i = 0; i < Grid.GetLength(0); i++)
-        //    {
-        //        for (int j = 0; j < Grid.GetLength(1); j++)
-        //        {
-        //            if (Border == true && (i == 0 || i == Grid.GetLength(0) - 1 || j == 0 || j == Grid.GetLength(1) - 1))
-        //            {
-        //                Grid[i, j] = new DisplayChar { Char = 'B', Colour = ConsoleColor.Green };
-        //            }
-        //            else
-        //            {
-        //                Grid[i, j] = null;
-        //            }
-        //        }
-        //    }
-        //}
-
+        
         public Area(IArea area)
         {
             // Duplicate the border boolean
-            Border = area.Border;
+            //Border = area.Border;
             
-            Grid = new DisplayChar?[area.Grid.GetLength(0), area.Grid.GetLength(1)];
+            Grid = new string[area.Grid.GetLength(0), area.Grid.GetLength(1)];
 
-            EmptyChar = area.EmptyChar;
+            Updates = new Queue<Tuple<int[], int[]>>();
+
+            EmptySpaceImage = area.EmptySpaceImage;
 
             Focus = area.Focus;
 
@@ -107,32 +71,33 @@ namespace GridEngine.Areas
             }
         }
 
-        public Area(XmlNode areaXml, Type entities, Type methodsClass)
+        public Area(XmlNode areaXml)
         {
-            Border = Convert.ToBoolean(areaXml.Attributes["border"].Value);
+            //Border = Convert.ToBoolean(areaXml.Attributes["border"].Value);
 
             int width = Convert.ToInt32(areaXml.Attributes["width"].Value);
             int height = Convert.ToInt32(areaXml.Attributes["height"].Value);
 
-            if (Border == true)
-            {
-                width += 2;
-                height += 2;
-            }
+            //if (Border == true)
+            //{
+            //    width += 2;
+            //    height += 2;
+            //}
 
-            Grid = new DisplayChar?[width, height];
+            Grid = new string[width, height];
+
+            Updates = new Queue<Tuple<int[], int[]>>();
 
             foreach (XmlNode node in areaXml.ChildNodes)
             {
-                if (node.Name == "empty_char")
+                if (node.Name == "empty_space_image")
                 {
-                    EmptyChar = new DisplayChar { Char = node.Attributes["char"].Value.ToCharArray()[0], Colour = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), node.Attributes["color"].Value) };
+                    EmptySpaceImage = node.Attributes["name"].Value;
                     break;
                 }
             }
 
             Focus = false;
-            
             
             EntryPoints = new Dictionary<string, int[]>();
 
@@ -160,14 +125,7 @@ namespace GridEngine.Areas
             {
                 for (int j = 0; j < Grid.GetLength(1); j++)
                 {
-                    if (Border == true && (i == 0 || i == Grid.GetLength(0) - 1 || j == 0 || j == Grid.GetLength(1) - 1))
-                    {
-                        Grid[i, j] = new DisplayChar { Char = 'B', Colour = ConsoleColor.Green };
-                    }
-                    else
-                    {
-                        Grid[i, j] = null;
-                    }
+                    Grid[i, j] = null;
                 }
             }
 
@@ -196,8 +154,6 @@ namespace GridEngine.Areas
 
         public virtual object Clone()
         {
-            // also check update to entity cloning
-
             return new Area(this);
         }
 
@@ -209,15 +165,13 @@ namespace GridEngine.Areas
                 throw new ArgumentException("An entity with the same name allready exists.");
             }
 
-            int[] trueLocation = CorrectLocation((int[])location.Clone());
-
-            if (Grid[trueLocation[0], trueLocation[1]] == null)
+            if (Grid[location[0], location[1]] == null)
             {
-                Grid[trueLocation[0], trueLocation[1]] = entity.Indicator;
+                Grid[location[0], location[1]] = entity.Indicator;
 
                 if (Focus == true)
                 {
-                    UpdateScreen(new List<int[]> { trueLocation });
+                    UpdateDisplay(new List<Tuple<int[], int[]>> { new Tuple<int[], int[]>(location, null) });
                 }
 
                 entity.SetLocation(location);
@@ -249,9 +203,9 @@ namespace GridEngine.Areas
             return true;
         }
 
-        public static DisplayChar?[,] FormGrid(XmlNode gridData, int width, int height)
+        public static string[,] FormGrid(XmlNode gridData, int width, int height)
         {
-            DisplayChar?[,] grid = new DisplayChar?[width, height];
+            string[,] grid = new string[width, height];
 
             int y = 0;
 
@@ -262,13 +216,13 @@ namespace GridEngine.Areas
                     int x = 0;
                     foreach (XmlNode Item in row.ChildNodes)
                     {
-                        if (Item.Name == "display_char")
-                        {
-                            grid[x, y] = new DisplayChar { Char = Item.Attributes["char"].Value.ToCharArray()[0], Colour = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), Item.Attributes["color"].Value) };
-                        }
-                        else if (Item.Name == "Null")
+                        if (Item.Name == "Null")
                         {
                             grid[x, y] = null;
+                        }
+                        else
+                        {
+                            grid[x, y] = Item.Attributes["name"].Value;
                         }
 
                         x++;
@@ -325,15 +279,15 @@ namespace GridEngine.Areas
             }
 
             // Draw the area on the console
-            List<int[]> positions = new List<int[]>();
+            List<Tuple<int[], int[]>> positions = new List<Tuple<int[], int[]>>();
             for (int i = 0; i < Grid.GetLength(0); i++)
             {
                 for (int j = 0; j < Grid.GetLength(1); j++)
                 {
-                    positions.Add(new int[2] { i, j });
+                    positions.Add(new Tuple<int[], int[]>(new int[2] { i, j }, null));
                 }
             }
-            UpdateScreen(positions);
+            UpdateDisplay(positions);
 
             // Create the player and NPC threads
             ControllPlayerThread = new System.Threading.Thread(new System.Threading.ThreadStart(((IPlayer)Entities[PlayerName]).ControllPlayer));
@@ -370,7 +324,7 @@ namespace GridEngine.Areas
 
             Focus = false;
 
-            int[] playerLocation = CorrectLocation(Entities[PlayerName].Location);
+            int[] playerLocation = Entities[PlayerName].Location;
 
             Grid[playerLocation[0], playerLocation[1]] = null;
 
@@ -395,22 +349,11 @@ namespace GridEngine.Areas
             return true;
         }
 
-        public virtual bool UpdateScreen(List<int[]> positions)
+        public virtual bool UpdateDisplay(List<Tuple<int[], int[]>> updates)
         {
-            foreach (int[] position in positions)
+            foreach (Tuple<int[], int[]> update in updates)
             {
-                Console.SetCursorPosition(position[0], position[1]);
-
-                if (Grid[position[0], position[1]] != null)
-                {
-                    Console.ForegroundColor = ((DisplayChar)Grid[position[0], position[1]]).Colour;
-                    Console.Write(((DisplayChar)Grid[position[0], position[1]]).Char);
-                }
-                else
-                {
-                    Console.ForegroundColor = EmptyChar.Colour;
-                    Console.Write(EmptyChar.Char);
-                }
+                Updates.Enqueue(update);
             }
 
             return true;
@@ -418,16 +361,13 @@ namespace GridEngine.Areas
 
         public bool Swap(int[] l1, int[] l2)
         {
-            int[] location1 = CorrectLocation(l1);
-            int[] location2 = CorrectLocation(l2);
-
-            DisplayChar? temp = Grid[location1[0], location1[1]];
-            Grid[location1[0], location1[1]] = Grid[location2[0], location2[1]];
-            Grid[location2[0], location2[1]] = temp;
+            string temp = Grid[l1[0], l1[1]];
+            Grid[l1[0], l1[1]] = Grid[l2[0], l2[1]];
+            Grid[l2[0], l2[1]] = temp;
 
             if (Focus == true)
             {
-                UpdateScreen(new List<int[]> { location1, location2 });
+                UpdateDisplay(new List<Tuple<int[], int[]>> { new Tuple<int[], int[]>(l1, l2) });
             }
 
             return true;
@@ -435,8 +375,8 @@ namespace GridEngine.Areas
 
         public bool Move(object entity, MoveEntityEventArgs e)
         {
-            int[] location1 = CorrectLocation((int[])e.Location.Clone());
-            int[] location2 = CorrectLocation((int[])e.NewLocation.Clone());
+            int[] location1 = (int[])e.Location.Clone();
+            int[] location2 = (int[])e.NewLocation.Clone();
 
             if (location2[0] < 0 || location2[0] >= Grid.GetLength(0) || location2[1] < 0 || location2[1] >= Grid.GetLength(1))
             {
@@ -459,13 +399,13 @@ namespace GridEngine.Areas
                 return false;
             }
 
-            DisplayChar? temp = Grid[location1[0], location1[1]];
+            string temp = Grid[location1[0], location1[1]];
             Grid[location1[0], location1[1]] = null;
             Grid[location2[0], location2[1]] = temp;
 
             if (Focus == true)
             {
-                UpdateScreen(new List<int[]> { location1, location2 });
+                UpdateDisplay(new List<Tuple<int[], int[]>> { new Tuple<int[], int[]>(location1, location2) });
             }
 
             return true;
@@ -473,9 +413,9 @@ namespace GridEngine.Areas
 
         public Tuple<bool, int[]> Move(object entity, RespawnEntityEventArgs e)
         {
-            int[] location1 = CorrectLocation((int[])e.Location.Clone());
+            int[] location1 = (int[])e.Location.Clone();
             int[] newLocation = (int[])(EntryPoints[e.EntryPoint].Clone());
-            int[] location2 = CorrectLocation(newLocation);
+            int[] location2 = newLocation;
 
             if (location2[0] < 0 || location2[0] >= Grid.GetLength(0) || location2[1] < 0 || location2[1] >= Grid.GetLength(1))
             {
@@ -498,13 +438,13 @@ namespace GridEngine.Areas
                 return new Tuple<bool, int[]>(false, (int[])e.Location.Clone());
             }
 
-            DisplayChar? temp = Grid[location1[0], location1[1]];
+            string temp = Grid[location1[0], location1[1]];
             Grid[location1[0], location1[1]] = null;
             Grid[location2[0], location2[1]] = temp;
 
             if (Focus == true)
             {
-                UpdateScreen(new List<int[]> { location1, location2 });
+                UpdateDisplay(new List<Tuple<int[], int[]>> { new Tuple<int[], int[]>(location1, location2) });
             }
 
             return new Tuple<bool, int[]>(true, newLocation);
@@ -529,11 +469,6 @@ namespace GridEngine.Areas
         {
             int width = Grid.GetLength(0);
 
-            if (Border == true)
-            {
-                width -= 2;
-            }
-
             return width;
         }
 
@@ -541,30 +476,10 @@ namespace GridEngine.Areas
         {
             int height = Grid.GetLength(1);
 
-            if (Border == true)
-            {
-                height -= 2;
-            }
-
             return height;
         }
 
-        protected int[] CorrectLocation(int[] location)
-        {
-            int[] alteredLocation = new int[2];
-            alteredLocation[0] = location[0];
-            alteredLocation[1] = location[1];
-
-            if (Border == true)
-            {
-                alteredLocation[0] += 1;
-                alteredLocation[1] += 1;
-            }
-
-            return alteredLocation;
-        }
-
-
+        
         public event EntityCollisionEventHandler EntityCollision;
 
         protected virtual void OnRaiseEntityCollision(EntityCollisionEventArgs e)

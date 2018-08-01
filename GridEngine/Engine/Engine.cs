@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
 using System.Reflection;
 
 using GridEngine.Areas;
@@ -15,80 +16,85 @@ namespace GridEngine.Engine
 {
     public sealed class Engine
     {
-        public Dictionary<Keys, Responce> Actions { get; private set; }
+        public string Name { get; private set; }
 
-        public IArea ActiveArea { get; private set; }
+        private XmlDocument GameData;
 
         public Dictionary<string, IArea> Areas { get; private set; }
 
-        private int[] ConsoleWindowSettings;
-
-        public string Name { get; private set; }
+        public IArea ActiveArea { get; private set; }
 
         public IPlayer Player { get; private set; }
 
-        private string PreviousName;
-        
         public List<Keys> ReservedKeys { get; private set; }
-        
+
+        public Dictionary<Keys, Responce> Actions { get; private set; }
+
+        public Dictionary<string, string> Images { get; private set; }
+
 
         public Engine(XmlDocument gameData)
         {
-            Console.Title = gameData.DocumentElement.Attributes["name"].Value;
-            ConsoleWindowSettings = new int[4] { Console.WindowWidth, Console.WindowHeight, Console.WindowTop, Console.WindowLeft };
+            // Validate the XML document
+            GameData = gameData;
+            GameData.Schemas.Add(null, "https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine/GridGamesData.xsd");
+
+            //void ValidationEventHandler(object sender, ValidationEventArgs e)
+            //{
+            //    throw new XmlSchemaException("The format of the game data was invalid.");
+            //}
+            
+            GameData.Validate(new ValidationEventHandler((object sender, ValidationEventArgs e) => throw new XmlSchemaException("The format of the game data was invalid. The schema the XML must conform to can be found at \"https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine/GridGamesData.xsd\"")));
+
+            Name = GameData.DocumentElement.Attributes["name"].Value;
 
             // Create areas
+            XmlNode gameSubNode = GameData.DocumentElement.FirstChild;// selects the "areas" node
+
             Areas = new Dictionary<string, IArea>();
 
-            foreach (XmlNode node in gameData.DocumentElement.ChildNodes)
+            foreach (XmlNode node in gameSubNode)
             {
-                if (node.Name == "area")
-                {
-                    Areas[node.Attributes["name"].Value] = (IArea)Activator.CreateInstance(Type.GetType(node.Attributes["type"].Value), node, entities, methodsClass);
-                }
+                Areas[node.Attributes["name"].Value] = (IArea)Activator.CreateInstance(Type.GetType(node.Attributes["type"].Value), node);
             }
-
-            //Add player and actions
+            
+            // Add player and actions
             Actions = new Dictionary<Keys, Responce>();
             ReservedKeys = new List<Keys> { Keys.Escape };
             // TODO: Make pause menu
             Actions[Keys.Escape] = new Responce(stop => null);
 
+            gameSubNode = gameSubNode.NextSibling; ;// selects the "player" node
 
-            foreach (XmlNode node in gameData.DocumentElement.ChildNodes)
+            foreach (XmlNode playerSubNode in gameSubNode)
             {
-                if (node.Name == "player")
+                foreach (XmlNode actionNode in playerSubNode.LastChild)// The actions node is the final child of the player
                 {
-                    foreach (XmlNode playerNode in node.ChildNodes)
-                    {
-                        if (playerNode.Name == "actions")
-                        {
-                            foreach (XmlNode actionNode in playerNode.ChildNodes)
-                            {
-                                if (actionNode.Name == "action")
-                                {
-                                    KeyAction((ConsoleKey)Enum.Parse(typeof(ConsoleKey), actionNode.Attributes["key"].Value), (Responce)Delegate.CreateDelegate(typeof(Responce), methodsClass, actionNode.Attributes["method"].Value));
-                                }
-                            }
-
-                            break;
-                        }
-                    }
-
-                    AddPlayer(node, entities.GetNestedType(node.Attributes["type"].Value), entities, methodsClass);
-
-                    break;
+                    KeyAction((ConsoleKey)Enum.Parse(typeof(ConsoleKey), actionNode.Attributes["key"].Value), (Responce)Delegate.CreateDelegate(typeof(Responce), methodsClass, actionNode.Attributes["method"].Value));
                 }
+            }
+
+            AddPlayer(gameSubNode, Type.GetType(gameSubNode.Attributes["type"].Value));
+
+            // Add images
+            gameSubNode = gameSubNode.NextSibling; ;// selects the "images" node
+
+            Images = new Dictionary<string, string>();
+
+            foreach (XmlNode imageNode in gameSubNode)
+            {
+                Images[imageNode.Attributes["name"].Value] = imageNode.Attributes["filename"].Value;
             }
         }
 
-        public void AddPlayer(XmlNode playerXml, Type playerClass, Type entities, Type methodsClass)
+        public void AddPlayer(XmlNode playerXml, Type playerClass)
         {
-            Player = (IPlayer)Activator.CreateInstance(playerClass, playerXml, Actions, entities, methodsClass);
+            Player = (IPlayer)Activator.CreateInstance(playerClass, playerXml, Actions);
 
             Player.StopEngine += End;
         }
 
+        //TODO: Obsolite???
         public void AddPlayer(IPlayer player)
         {
             Player = new PlayerEntity(player, Actions);
@@ -96,17 +102,13 @@ namespace GridEngine.Engine
             Player.StopEngine += End;
         }
 
-        public void Start()
+        public void Start(string startAreaName = "Start")
         {
             if (Player == null)
             {
                 throw new InvalidOperationException("No player has yet been defined.");
             }
-
-            //Setup for writing to console
-            Console.CursorVisible = false;
-            Console.Clear();
-
+            
             ActiveArea = (IArea)Areas["Start"].Clone();
 
             ActiveArea.ShowArea((IPlayer)Player.Clone(), Actions);
@@ -121,18 +123,21 @@ namespace GridEngine.Engine
             ActiveArea.ShowArea((IPlayer)Player.Clone(), Actions, entryPoint);
         }
 
+        public void OpenMenu()
+        {
+            // Pause area
+            // Open menu
+        }
+
+        public void CloseMenu()
+        {
+            // change to event handeler
+            // Resume area
+        }
+
         public void End(object sender, StopEngineEventArgs e)
         {
-            // Reset console window
-            Console.Clear();
-            Console.ResetColor();
-            Console.CursorVisible = true;
-            Console.SetWindowSize(ConsoleWindowSettings[0], ConsoleWindowSettings[1]);
-            Console.WindowTop = ConsoleWindowSettings[2];
-            Console.WindowLeft = ConsoleWindowSettings[3];
-            Console.Title = PreviousName;
-
-            OnRaiseEngineStop(new EngineStopEventArgs());
+            OnRaiseEngineStopped(new EngineStoppedEventArgs());
         }
 
         /// <summary>
@@ -207,19 +212,19 @@ namespace GridEngine.Engine
             }
         }
 
-        public event EngineStopEventHandler EngineStop;
+        public event EngineStoppedEventHandler EngineStop;
 
-        public void OnRaiseEngineStop(EngineStopEventArgs e)
+        public void OnRaiseEngineStopped(EngineStoppedEventArgs e)
         {
             EngineStop?.Invoke(this, e);
         }
     }
 
-    public delegate void EngineStopEventHandler(object sender, EngineStopEventArgs e);
+    public delegate void EngineStoppedEventHandler(object sender, EngineStoppedEventArgs e);
 
-    public class EngineStopEventArgs : EventArgs
+    public class EngineStoppedEventArgs : EventArgs
     {
-        public EngineStopEventArgs()
+        public EngineStoppedEventArgs()
         {
         }
     }

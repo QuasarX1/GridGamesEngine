@@ -17,13 +17,13 @@ namespace GridEngine.Areas
 
         List<System.Threading.Thread> ControllNPCThreads { get; }
 
-        DisplayChar?[,] Grid { get; }
+        string[,] Grid { get; }
 
-        bool Border { get; }
+        //bool Border { get; }
 
         Dictionary<string, int[]> EntryPoints { get; }
 
-        DisplayChar EmptyChar { get; }
+        string EmptySpaceImage { get; }
 
         bool Focus { get; }
 
@@ -40,7 +40,7 @@ namespace GridEngine.Areas
 
         bool HideArea();
 
-        bool UpdateScreen(List<int[]> positions);
+        bool UpdateDisplay(List<int[]> positions);
 
         bool Move(object entity, MoveEntityEventArgs e);
 

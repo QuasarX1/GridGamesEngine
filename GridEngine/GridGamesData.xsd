@@ -5,7 +5,7 @@
     xmlns="GridEngine"
     xmlns:mstns="GridEngine"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
->
+>  
   <xs:complexType name="image">
     <xs:attribute name="name" type="xs:string" use="required" />
   </xs:complexType>
@@ -41,9 +41,10 @@
                         <xs:sequence>
                           <xs:element name="row" minOccurs="1" maxOccurs="unbounded">
                             <xs:complexType>
-                              <xs:sequence>
+                              <xs:choice>
                                 <xs:element name="background_image_element" type="image" minOccurs="1" maxOccurs="unbounded" />
-                              </xs:sequence>
+                                <xs:element name="null" />
+                              </xs:choice>
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
@@ -77,14 +78,13 @@
                   <xs:attribute name="name" type="xs:string" use="required" />
                   <xs:attribute name="width" type="xs:integer" use="required" />
                   <xs:attribute name="height" type="xs:integer" use="required" />
-                  <xs:attribute name="border" type="xs:boolean" use="required" />
+                  <!--<xs:attribute name="border" type="xs:boolean" use="required" />-->
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
         
-
         <xs:element name="player" minOccurs="1" maxOccurs="1">
           <xs:complexType>
             <xs:all>

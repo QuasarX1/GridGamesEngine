@@ -57,7 +57,7 @@ namespace GridEngine.Areas
             return new BackgroundArea(this);
         }
 
-        public override bool UpdateScreen(List<int[]> positions)
+        public override bool UpdateDisplay(List<int[]> positions)
         {
             foreach (int[] position in positions)
             {
