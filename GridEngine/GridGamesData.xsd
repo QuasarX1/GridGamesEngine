@@ -42,7 +42,7 @@
                           <xs:element name="row" minOccurs="1" maxOccurs="unbounded">
                             <xs:complexType>
                               <xs:choice>
-                                <xs:element name="background_image_element" type="image" minOccurs="0" maxOccurs="unbounded" />
+                                <xs:element name="background_image_element" type="image" minOccurs="1" maxOccurs="unbounded" />
                                 <xs:element name="null" minOccurs="0" maxOccurs="unbounded" />
                               </xs:choice>
                             </xs:complexType>
