@@ -9,7 +9,7 @@ using GridEngine.Entities;
 
 namespace GridEngine.Areas
 {
-    public class BackgroundArea: Area, IArea
+    public class BackgroundArea: Area, IBackgroundArea
     {
         public string[,] Background { get; protected set; }
 
