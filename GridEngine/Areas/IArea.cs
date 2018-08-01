@@ -4,7 +4,7 @@ using System.Text;
 
 using GridEngine.Deligates;
 using GridEngine.Entities;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Areas
@@ -40,7 +40,7 @@ namespace GridEngine.Areas
 
         bool HideArea();
 
-        bool UpdateDisplay(List<int[]> positions);
+        bool UpdateDisplay(List<Tuple<int[], int[]>> updates);
 
         bool Move(object entity, MoveEntityEventArgs e);
 

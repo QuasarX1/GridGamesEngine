@@ -5,22 +5,24 @@ using System.Xml;
 
 using GridEngine.Deligates;
 using GridEngine.Entities;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Areas
 {
     public class BackgroundArea: Area, IArea
     {
-        public DisplayChar?[,] Background { get; protected set; }
+        public string[,] Background { get; protected set; }
 
-        public BackgroundArea(DisplayChar?[,] background, bool border = false, DisplayChar? emptyChar = null) : base(background.GetLength(0), background.GetLength(1), border, emptyChar)
-        {
-            Background = background;
-        }
+        public new string[,] DisplayGrid { get; protected set; }
+
+        //public BackgroundArea(DisplayChar?[,] background, bool border = false, DisplayChar? emptyChar = null) : base(background.GetLength(0), background.GetLength(1), border, emptyChar)
+        //{
+        //    Background = background;
+        //}
 
         public BackgroundArea(BackgroundArea area): base(area)
         {
-            Background = new DisplayChar?[area.Background.GetLength(0),area.Background.GetLength(1)];
+            Background = new string[area.Background.GetLength(0), area.Background.GetLength(1)];
 
             for (int i = 0; i < Background.GetLength(0); i++)
             {
@@ -29,27 +31,43 @@ namespace GridEngine.Areas
                     Background[i, j] = area.Background[i, j];
                 }
             }
+
+            DisplayGrid = new string[area.Background.GetLength(0), area.Background.GetLength(1)];
         }
 
-        public BackgroundArea(XmlNode areaXml, Type entities, Type methodsClass) : base(areaXml, entities, methodsClass)
+        public BackgroundArea(XmlNode areaXml) : base(areaXml)
         {
-            XmlNode backgroundXml = null;
+            //XmlNode backgroundXml = null;
 
-            foreach (XmlNode node in areaXml.ChildNodes)
+            //foreach (XmlNode node in areaXml.ChildNodes)
+            //{
+            //    if (node.Name == "background")
+            //    {
+            //        backgroundXml = node;
+            //        break;
+            //    }
+            //}
+
+            //if (backgroundXml == null)
+            //{
+            //    throw new ArgumentException("The xml provided for this area dosen't contain a background tag.");
+            //}
+
+            Background = FormGrid(areaXml.ChildNodes.Item(1), Convert.ToInt32(areaXml.Attributes["width"].Value), Convert.ToInt32(areaXml.Attributes["height"].Value));
+
+            DisplayGrid = new string[Convert.ToInt32(areaXml.Attributes["width"].Value), Convert.ToInt32(areaXml.Attributes["height"].Value)];
+
+            List<Tuple<int[], int[]>> updates = new List<Tuple<int[], int[]>>();
+
+            for (int i = 0; i < Convert.ToInt32(areaXml.Attributes["width"].Value); i++)
             {
-                if (node.Name == "background")
+                for (int j = 0; j < Convert.ToInt32(areaXml.Attributes["height"].Value); j++)
                 {
-                    backgroundXml = node;
-                    break;
+                    updates.Add(new Tuple<int[], int[]>(new int[] { i, j }, null));
                 }
             }
 
-            if (backgroundXml == null)
-            {
-                throw new ArgumentException("The xml provided for this area dosen't contain a background tag.");
-            }
-
-            Background = FormGrid(backgroundXml, Convert.ToInt32(areaXml.Attributes["width"].Value), Convert.ToInt32(areaXml.Attributes["height"].Value));
+            UpdateDisplay(updates);
         }
 
         public override object Clone()
@@ -57,26 +75,20 @@ namespace GridEngine.Areas
             return new BackgroundArea(this);
         }
 
-        public override bool UpdateDisplay(List<int[]> positions)
+        public override bool UpdateDisplay(List<Tuple<int[], int[]>> updates)
         {
-            foreach (int[] position in positions)
-            {
-                Console.SetCursorPosition(position[0], position[1]);
+            ((IArea)this).UpdateDisplay(updates);
 
-                if (Grid[position[0], position[1]] != null)
+            DisplayGrid = (string[,])Background.Clone();
+
+            for (int i = 0; i < Convert.ToInt32(GetWidth()); i++)
+            {
+                for (int j = 0; j < Convert.ToInt32(GetHeight()); j++)
                 {
-                    Console.ForegroundColor = ((DisplayChar)Grid[position[0], position[1]]).Colour;
-                    Console.Write(((DisplayChar)Grid[position[0], position[1]]).Char);
-                }
-                else if (Background[position[0] - ((Border == true)? 1: 0), position[1] - ((Border == true) ? 1 : 0)] != null)
-                {
-                    Console.ForegroundColor = ((DisplayChar)Background[position[0] - ((Border == true) ? 1 : 0), position[1] - ((Border == true) ? 1 : 0)]).Colour;
-                    Console.Write(((DisplayChar)Background[position[0] - ((Border == true) ? 1 : 0), position[1] - ((Border == true) ? 1 : 0)]).Char);
-                }
-                else
-                {
-                    Console.ForegroundColor = EmptyChar.Colour;
-                    Console.Write(EmptyChar.Char);
+                    if (Grid[i, j] != null)
+                    {
+                        DisplayGrid[i, j] = Grid[i, j];
+                    }
                 }
             }
 

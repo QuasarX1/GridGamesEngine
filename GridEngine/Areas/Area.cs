@@ -13,6 +13,8 @@ namespace GridEngine.Areas
     {
         public string[,] Grid { get; protected set; }
 
+        public string[,] DisplayGrid { get { return (string[,])Grid.Clone(); } }
+
         private Queue<Tuple<int[], int[]>> Updates;
 
         public Tuple<int[], int[]> NextUpdate { get { return Updates.Dequeue(); } }
@@ -73,16 +75,8 @@ namespace GridEngine.Areas
 
         public Area(XmlNode areaXml)
         {
-            //Border = Convert.ToBoolean(areaXml.Attributes["border"].Value);
-
             int width = Convert.ToInt32(areaXml.Attributes["width"].Value);
             int height = Convert.ToInt32(areaXml.Attributes["height"].Value);
-
-            //if (Border == true)
-            //{
-            //    width += 2;
-            //    height += 2;
-            //}
 
             Grid = new string[width, height];
 

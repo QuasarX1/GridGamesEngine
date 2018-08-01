@@ -33,7 +33,7 @@
             <xs:sequence>
               <xs:element name="area" minOccurs="1" maxOccurs="unbounded">
                 <xs:complexType>
-                  <xs:all>
+                  <xs:sequence>
                     <xs:element name="empty_space_image" type="image" />
                     
                     <xs:element name="background">
@@ -42,8 +42,8 @@
                           <xs:element name="row" minOccurs="1" maxOccurs="unbounded">
                             <xs:complexType>
                               <xs:choice>
-                                <xs:element name="background_image_element" type="image" minOccurs="1" maxOccurs="unbounded" />
-                                <xs:element name="null" />
+                                <xs:element name="background_image_element" type="image" minOccurs="0" maxOccurs="unbounded" />
+                                <xs:element name="null" minOccurs="0" maxOccurs="unbounded" />
                               </xs:choice>
                             </xs:complexType>
                           </xs:element>
@@ -72,7 +72,7 @@
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
-                  </xs:all>
+                  </xs:sequence>
                   
                   <xs:attribute name="type" type="xs:string" use="required" />
                   <xs:attribute name="name" type="xs:string" use="required" />
