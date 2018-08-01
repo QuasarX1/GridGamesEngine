@@ -87,7 +87,7 @@
         
         <xs:element name="player" minOccurs="1" maxOccurs="1">
           <xs:complexType>
-            <xs:all>
+            <xs:sequence>
               <xs:element name="image" type="image" />
 
               <xs:element name="collisions">
@@ -141,7 +141,7 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
-            </xs:all>
+            </xs:sequence>
             
             <xs:attribute name="type" type="xs:string" fixed="Player" use="required" />
             <xs:attribute name="name" type="xs:string" fixed="Player" use="required" />

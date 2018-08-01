@@ -4,7 +4,7 @@ using System.Xml;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Entities
 {
@@ -16,26 +16,19 @@ namespace GridEngine.Entities
 
         public int[] Location { get; protected set; }
 
-        public DisplayChar Indicator { get; protected set; }
+        public string Image { get; protected set; }
 
         public bool Active { get; set; }
 
 
-
-        public Entity(string name, DisplayChar? indicator = null)
+        // Obsolite?
+        public Entity(string name, string image)
         {
             Name = name;
 
             CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
 
-            if (indicator == null)
-            {
-                Indicator = new DisplayChar { Char = 'E', Colour = ConsoleColor.White };
-            }
-            else
-            {
-                Indicator = (DisplayChar)indicator;
-            }
+            Image = image;
         }
 
         public Entity(Entity entity)
@@ -44,7 +37,7 @@ namespace GridEngine.Entities
 
             CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
 
-            Indicator = entity.Indicator;
+            Image = entity.Image;
 
             SetLocation(entity.Location);
 
@@ -104,22 +97,22 @@ namespace GridEngine.Entities
                 }
             }
 
-            XmlNode indicatorXml = null;
+            XmlNode imageXml = null;
 
             foreach (XmlNode node in entityXml.ChildNodes)
             {
-                if (node.Name == "indicator")
+                if (node.Name == "image")
                 {
-                    indicatorXml = node;
+                    imageXml = node;
                 }
             }
 
-            if (indicatorXml == null)
+            if (imageXml == null)
             {
                 throw new ArgumentException("The xml provided for this area dosen't contain an indicator tag.");
             }
 
-            Indicator = new DisplayChar { Char = indicatorXml.Attributes["char"].Value.ToCharArray()[0], Colour = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), indicatorXml.Attributes["color"].Value) };
+            Image = imageXml.Attributes["name"].Value;
         }
 
         public void SetLocation(int[] location)

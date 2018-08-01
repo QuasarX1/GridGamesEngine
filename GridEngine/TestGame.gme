@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<game name="Test Game"
+      xmlns="GridEngine"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="GridEngine https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine/GridGamesData.xsd"
+>
+  <areas>
+    <area>
+      
+    </area>
+  </areas>
+
+  <player name="Player" type="Player">
+    
+  </player>
+
+  <image_files>
+    
+  </image_files>
+</game>
