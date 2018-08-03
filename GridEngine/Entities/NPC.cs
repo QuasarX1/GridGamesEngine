@@ -4,13 +4,13 @@ using System.Text;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Entities
 {
     public class NPC: MobileEntity, INpc
     {
-        public NPC(string name, DisplayChar? indicator = null): base(name, indicator) { }
+        //public NPC(string name, DisplayChar? indicator = null): base(name, indicator) { }
 
         public NPC(NPC npc) : base(npc) { }
 

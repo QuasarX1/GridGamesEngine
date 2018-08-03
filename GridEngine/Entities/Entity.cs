@@ -14,6 +14,8 @@ namespace GridEngine.Entities
 
         public string Name { get; protected set; }
 
+        public int ID { get; protected set; }// Add in constructors
+
         public int[] Location { get; protected set; }
 
         public string Image { get; protected set; }
@@ -50,6 +52,10 @@ namespace GridEngine.Entities
                 else if (action.Key.Item1 == "name")
                 {
                     AddCollisionAction((string)action.Key.Item2, action.Value);
+                }
+                else if (action.Key.Item1 == "id")
+                {
+                    AddCollisionAction((int)action.Key.Item2, action.Value);
                 }
             }
         }
@@ -90,6 +96,19 @@ namespace GridEngine.Entities
                             }
 
                             AddCollisionAction(entityName, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), methodsClass, collisionNode.Attributes["method"].Value), stringArgs.ToArray()));
+                        }
+
+                        else if (collisionNode.Name == "id_collision")
+                        {
+                            int entityId = Convert.ToInt16(collisionNode.Attributes["name"].Value);
+                            List<string> stringArgs = new List<string>();
+
+                            foreach (XmlNode stringNode in collisionNode.ChildNodes)
+                            {
+                                stringArgs.Add(stringNode.Attributes["string_data"].Value);
+                            }
+
+                            AddCollisionAction(entityId, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), methodsClass, collisionNode.Attributes["method"].Value), stringArgs.ToArray()));
                         }
                     }
 
@@ -158,6 +177,19 @@ namespace GridEngine.Entities
             }
         }
 
+        public bool AddCollisionAction(int entityId, Tuple<ColisionResponce, string[]> responce)
+        {
+            if (!CollisionActions.ContainsKey(new Tuple<string, object>("id", entityId)))
+            {
+                CollisionActions[new Tuple<string, object>("id", entityId)] = responce;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void RemoveCollisionAction(Type entityType)
         {
             if (CollisionActions.ContainsKey(new Tuple<string, object>("type", entityType)))
@@ -171,6 +203,14 @@ namespace GridEngine.Entities
             if (CollisionActions.ContainsKey(new Tuple<string, object>("name", entityName)))
             {
                 CollisionActions.Remove(new Tuple<string, object>("name", entityName));
+            }
+        }
+
+        public void RemoveCollisionAction(int entityId)
+        {
+            if (CollisionActions.ContainsKey(new Tuple<string, object>("id", entityId)))
+            {
+                CollisionActions.Remove(new Tuple<string, object>("id", entityId));
             }
         }
 
@@ -193,6 +233,20 @@ namespace GridEngine.Entities
             if (CollisionActions.ContainsKey(new Tuple<string, object>("name", entityName)))
             {
                 CollisionActions.Remove(new Tuple<string, object>("name", entityName));
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveCollisionActionOrFail(int entityId)
+        {
+            if (CollisionActions.ContainsKey(new Tuple<string, object>("id", entityId)))
+            {
+                CollisionActions.Remove(new Tuple<string, object>("id", entityId));
 
                 return true;
             }
@@ -233,6 +287,15 @@ namespace GridEngine.Entities
                 else if (CollisionAction.Key.Item1 == "name")
                 {
                     if (otherEntity.Name == (string)CollisionAction.Key.Item2)
+                    {
+                        CollisionAction.Value.Item1(this, CollisionAction.Value.Item2);
+
+                        break;
+                    }
+                }
+                else if (CollisionAction.Key.Item1 == "id")
+                {
+                    if (otherEntity.ID == (int)CollisionAction.Key.Item2)
                     {
                         CollisionAction.Value.Item1(this, CollisionAction.Value.Item2);
 

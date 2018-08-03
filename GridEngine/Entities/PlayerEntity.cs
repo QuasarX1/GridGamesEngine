@@ -4,7 +4,7 @@ using System.Xml;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Entities
 {
@@ -12,15 +12,15 @@ namespace GridEngine.Entities
     {
         public Dictionary<ConsoleKey, Responce> Actions { get; protected set; }
 
-        public PlayerEntity(string name, Dictionary<ConsoleKey, Responce> actions, DisplayChar? indicator = null) : base(name, indicator)
-        {
-            Actions = actions;
-        }
+        //public PlayerEntity(string name, Dictionary<ConsoleKey, Responce> actions, DisplayChar? indicator = null) : base(name, indicator)
+        //{
+        //    Actions = actions;
+        //}
 
-        public PlayerEntity(IPlayer player, Dictionary<ConsoleKey, Responce>  actions) : base(player.Name, player.Indicator)
-        {
-            Actions = actions;
-        }
+        //public PlayerEntity(IPlayer player, Dictionary<ConsoleKey, Responce>  actions) : base(player.Name, player.Indicator)
+        //{
+        //    Actions = actions;
+        //}
 
         public PlayerEntity(PlayerEntity player): base(player)
         {
@@ -44,7 +44,7 @@ namespace GridEngine.Entities
         {
             while (Active == true)
             {
-                // Handle key input
+                // Handle key input - on event? - start and stop?
                 ConsoleKey key = Console.ReadKey(true).Key;
 
                 bool? result;

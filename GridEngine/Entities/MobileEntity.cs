@@ -4,15 +4,15 @@ using System.Xml;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Entities
 {
     public abstract class MobileEntity: Entity, IMobile
     {
-        public MobileEntity(string name, DisplayChar? indicator = null) : base(name, indicator) { }
+        //public MobileEntity(string name, DisplayChar? indicator = null) : base(name, indicator) { }
 
-        private MobileEntity(IEntity entity) : base(entity.Name, entity.Indicator) { }
+        //private MobileEntity(IEntity entity) : base(entity.Name, entity.Indicator) { }
 
         public MobileEntity(MobileEntity entity) : base(entity) { }
 

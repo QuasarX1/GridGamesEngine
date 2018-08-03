@@ -10,29 +10,45 @@ namespace GridEngine.Entities
 {
     public interface IEntity: ICloneable
     {
-        event GetProximityEventHandler GetProximity;
-
         Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>> CollisionActions { get; }
 
         string Name { get; }
 
+        int ID { get; }
+
         int[] Location { get; }
 
-        DisplayChar Indicator { get; }
+        string Image { get; }
 
         bool Active { get; set; }
+
 
         void SetLocation(int[] location);
 
         bool AddCollisionAction(Type entityType, Tuple<ColisionResponce, string[]> responce);
 
+        bool AddCollisionAction(string entityName, Tuple<ColisionResponce, string[]> responce);
+
+        bool AddCollisionAction(int entityId, Tuple<ColisionResponce, string[]> responce);
+
         void RemoveCollisionAction(Type entityType);
 
+        void RemoveCollisionAction(string entityName);
+
+        void RemoveCollisionAction(int entityId);
+
         bool RemoveCollisionActionOrFail(Type entityType);
+
+        bool RemoveCollisionActionOrFail(string entityName);
+
+        bool RemoveCollisionActionOrFail(int entityId);
 
         void Collision(object sender, EntityCollisionEventArgs e);
 
         void OnCollision(IEntity otherEntity, IArea area);
+
+
+        event GetProximityEventHandler GetProximity;
     }
 
 
