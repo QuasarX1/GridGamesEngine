@@ -4,16 +4,12 @@ using System.Text;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Entities
 {
     public interface IMobile: IEntity
     {
-        event MoveEventHandler MoveEntity;
-
-        event RespawnEventHandler RespawnEntity;
-
         bool Move(int[] newLocation);
 
         bool Respawn(string entryPoint);
@@ -27,6 +23,11 @@ namespace GridEngine.Entities
         bool MoveUp(int spaces = 1);
 
         bool MoveDown(int spaces = 1);
+
+
+        event MoveEventHandler MoveEntity;
+
+        event RespawnEventHandler RespawnEntity;
     }
 
     public delegate bool MoveEventHandler(object sender, MoveEntityEventArgs e);

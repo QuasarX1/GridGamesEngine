@@ -4,7 +4,8 @@ using System.Text;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
-using GridEngine.Structures;
+//using GridEngine.Structures;
+using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Entities
 {
@@ -12,7 +13,7 @@ namespace GridEngine.Entities
     {
         event StopEngineEventHandler StopEngine;
 
-        Dictionary<ConsoleKey, Responce> Actions { get; }
+        Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; }
 
         void ControllPlayer();
 

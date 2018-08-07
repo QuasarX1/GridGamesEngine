@@ -6,6 +6,7 @@ using System.Xml;
 using GridEngine.Deligates;
 using GridEngine.Entities;
 //using GridEngine.Structures;
+using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Areas
 {
@@ -161,7 +162,7 @@ namespace GridEngine.Areas
 
             if (Grid[location[0], location[1]] == null)
             {
-                Grid[location[0], location[1]] = entity.Indicator;
+                Grid[location[0], location[1]] = entity.Image;
 
                 if (Focus == true)
                 {
@@ -229,7 +230,7 @@ namespace GridEngine.Areas
             return grid;
         }
 
-        public bool ShowArea(IPlayer player, Dictionary<ConsoleKey, Responce> playerActions, string entryPoint = "deafult")
+        public bool ShowArea(IPlayer player, string entryPoint = "deafult")// Dictionary<Keys, Tuple<ColisionResponce, string[]>> playerActions, string entryPoint = "deafult")
         {
             if (EntryPoints == null)
             {
@@ -305,6 +306,16 @@ namespace GridEngine.Areas
                 thread.Start();
             }
 
+            return true;
+        }
+
+        public bool Pause()
+        {
+            return true;
+        }
+
+        public bool Resume()
+        {
             return true;
         }
 

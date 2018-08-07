@@ -2,5 +2,5 @@
 
 namespace GridEngine.Deligates
 {
-    public delegate bool? Responce(IPlayer entity = null);
+    public delegate bool? Responce(IPlayer entity, string[] stringParams);
 }

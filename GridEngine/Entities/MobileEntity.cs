@@ -16,7 +16,7 @@ namespace GridEngine.Entities
 
         public MobileEntity(MobileEntity entity) : base(entity) { }
 
-        public MobileEntity(XmlNode entityXml, Type entities, Type methodsClass) : base(entityXml, entities, methodsClass) { }
+        public MobileEntity(XmlNode entityXml) : base(entityXml) { }
 
         //public override object Clone()
         //{

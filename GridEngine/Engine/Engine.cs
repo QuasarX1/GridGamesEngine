@@ -9,7 +9,7 @@ using GridEngine.Areas;
 using GridEngine.Deligates;
 using GridEngine.Entities;
 using GridEngine.Enums;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Engine
@@ -28,14 +28,14 @@ namespace GridEngine.Engine
 
         public List<Keys> ReservedKeys { get; private set; }
 
-        public Dictionary<Keys, Responce> Actions { get; private set; }
+        public Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; private set; }// cnange entities to use new tuple form
 
         public Dictionary<string, string> Images { get; private set; }
 
 
         public Engine(XmlDocument gameData)
         {
-            // Validate the XML document
+        //- Validate the XML document
             GameData = gameData;
             GameData.Schemas.Add(null, "https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine/GridGamesData.xsd");
 
@@ -48,7 +48,7 @@ namespace GridEngine.Engine
 
             Name = GameData.DocumentElement.Attributes["name"].Value;
 
-            // Create areas
+        //- Create areas
             XmlNode gameSubNode = GameData.DocumentElement.FirstChild;// selects the "areas" node
 
             Areas = new Dictionary<string, IArea>();
@@ -58,25 +58,25 @@ namespace GridEngine.Engine
                 Areas[node.Attributes["name"].Value] = (IArea)Activator.CreateInstance(Type.GetType(node.Attributes["type"].Value), node);
             }
             
-            // Add player and actions
-            Actions = new Dictionary<Keys, Responce>();
+        //- Add player and actions
+            Actions = new Dictionary<Keys, Tuple<Responce, string[]>>();
             ReservedKeys = new List<Keys> { Keys.Escape };
             // TODO: Make pause menu
-            Actions[Keys.Escape] = new Responce(stop => null);
+            Actions[Keys.Escape] = new Tuple<Responce, string[]>(new Responce((IPlayer player, string[] args) => null), new string[0]);
 
             gameSubNode = gameSubNode.NextSibling; ;// selects the "player" node
 
-            foreach (XmlNode playerSubNode in gameSubNode)
+            foreach (XmlNode playerSubNode in gameSubNode.ChildNodes)
             {
                 foreach (XmlNode actionNode in playerSubNode.LastChild)// The actions node is the final child of the player
                 {
-                    KeyAction((ConsoleKey)Enum.Parse(typeof(ConsoleKey), actionNode.Attributes["key"].Value), (Responce)Delegate.CreateDelegate(typeof(Responce), methodsClass, actionNode.Attributes["method"].Value));
+                    KeyAction((Keys)Enum.Parse(typeof(Keys), actionNode.Attributes["key"].Value), (Responce)Delegate.CreateDelegate(typeof(Responce), typeof(Methods).GetMethod(actionNode.Attributes["method"].Value)), actionNode.ChildNodes);
                 }
             }
 
-            AddPlayer(gameSubNode, Type.GetType(gameSubNode.Attributes["type"].Value));
+            AddPlayer(gameSubNode, Type.GetType("GridEngine.Entities." + gameSubNode.Attributes["type"].Value));
 
-            // Add images
+        //- Add images
             gameSubNode = gameSubNode.NextSibling; ;// selects the "images" node
 
             Images = new Dictionary<string, string>();
@@ -93,8 +93,7 @@ namespace GridEngine.Engine
 
             Player.StopEngine += End;
         }
-
-        //TODO: Obsolite???
+        
         public void AddPlayer(IPlayer player)
         {
             Player = new PlayerEntity(player, Actions);
@@ -111,7 +110,7 @@ namespace GridEngine.Engine
             
             ActiveArea = (IArea)Areas["Start"].Clone();
 
-            ActiveArea.ShowArea((IPlayer)Player.Clone(), Actions);
+            ActiveArea.ShowArea((IPlayer)Player.Clone());//, Actions);
         }
 
         public void ChangeArea(string areaName, string entryPoint = "deafult")
@@ -120,19 +119,19 @@ namespace GridEngine.Engine
 
             ActiveArea = (IArea)Areas[areaName].Clone();
 
-            ActiveArea.ShowArea((IPlayer)Player.Clone(), Actions, entryPoint);
+            ActiveArea.ShowArea((IPlayer)Player.Clone(), entryPoint);//, Actions, entryPoint);
         }
 
         public void OpenMenu()
         {
-            // Pause area
+            ActiveArea.Pause();// Pause area
             // Open menu
         }
 
         public void CloseMenu()
         {
             // change to event handeler
-            // Resume area
+            ActiveArea.Resume();// Resume area
         }
 
         public void End(object sender, StopEngineEventArgs e)
@@ -146,14 +145,21 @@ namespace GridEngine.Engine
         /// </summary>
         /// <param name="key"></param>
         /// <param name="responce">A Responce deligate for the responce method.</param>
-        public void KeyAction(Keys key, Responce responce)
+        public void KeyAction(Keys key, Responce responce, XmlNodeList stringNodes)
         {
             if (ReservedKeys.Contains(key))
             {
                 throw new InvalidOperationException("The key " + key.ToString() + " is listed as a reserved key. This can't be assigned a custom action.");
             }
 
-            Actions[key] = responce;
+            List<string> args = new List<string>();
+
+            foreach (XmlNode stringNode in stringNodes)
+            {
+                args.Add(stringNode.Attributes["data"].Value);
+            }
+
+            Actions[key] = new Tuple<Responce, string[]>(responce, args.ToArray());
         }
 
         /// <summary>
@@ -162,7 +168,7 @@ namespace GridEngine.Engine
         /// <param name="key"></param>
         /// <param name="responce">A Responce deligate for the responce method.</param>
         /// <returns>Boolean to indicate success or failure.</returns>
-        public bool AddKeyAction(Keys key, Responce responce)
+        public bool AddKeyAction(Keys key, Responce responce, XmlNodeList stringNodes)
         {
             if (ReservedKeys.Contains(key))
             {
@@ -171,7 +177,15 @@ namespace GridEngine.Engine
 
             if (!Actions.ContainsKey(key))
             {
-                Actions[key] = responce;
+                List<string> args = new List<string>();
+
+                foreach (XmlNode stringNode in stringNodes)
+                {
+                    args.Add(stringNode.Attributes["data"].Value);
+                }
+
+                Actions[key] = new Tuple<Responce, string[]>(responce, args.ToArray());
+
                 return true;
             }
             else

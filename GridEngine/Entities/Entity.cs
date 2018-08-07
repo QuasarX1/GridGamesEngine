@@ -24,21 +24,22 @@ namespace GridEngine.Entities
 
 
         // Obsolite?
-        public Entity(string name, string image)
-        {
-            Name = name;
+        //public Entity(string name, string image)
+        //{
+        //    Name = name;
 
-            CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
+        //    CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
 
-            Image = image;
-        }
+        //    Image = image;
+        //}
 
         public Entity(Entity entity)
         {
-            Name = entity.Name;
-
             CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
 
+
+            Name = entity.Name;
+            
             Image = entity.Image;
 
             SetLocation(entity.Location);
@@ -60,78 +61,51 @@ namespace GridEngine.Entities
             }
         }
 
-        public Entity(XmlNode entityXml, Type entities, Type methodsClass)
+        public Entity(XmlNode entityXml)
         {
-            Name = entityXml.Attributes["name"].Value;
-
             CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
             
-            foreach (XmlNode node in entityXml.ChildNodes)
+            // Set the name
+            Name = entityXml.Attributes["name"].Value;
+
+            // Load the image name
+            XmlNode entitySubNode = entityXml.FirstChild;// Selects the image node
+
+            Image = entitySubNode.Attributes["name"].Value;
+
+            // Load the collision actions
+            entitySubNode = entitySubNode.NextSibling;// Selects the collisions node
+
+            foreach (XmlNode collisionNode in entitySubNode.ChildNodes)
             {
-                if (node.Name == "collisions")
+                List<string> stringArgs = new List<string>();
+
+                foreach (XmlNode stringNode in collisionNode.ChildNodes)
                 {
-                    foreach (XmlNode collisionNode in node.ChildNodes)
-                    {
-                        Console.WriteLine(collisionNode.Name);
-                        if (collisionNode.Name == "type_collision")
-                        {
-                            Type entityType = entities.GetNestedType(collisionNode.Attributes["type"].Value);
-                            List<string> stringArgs = new List<string>();
+                    stringArgs.Add(stringNode.Attributes["data"].Value);
+                }
 
-                            foreach (XmlNode stringNode in collisionNode.ChildNodes)
-                            {
-                                stringArgs.Add(stringNode.Attributes["data"].Value);
-                            }
+                if (collisionNode.Name == "type_collision")
+                {
+                    Type entityType = Type.GetType("GridEngine.Entities." + collisionNode.Attributes["type"].Value);
+                    
 
-                            AddCollisionAction(entityType, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), methodsClass, collisionNode.Attributes["method"].Value), stringArgs.ToArray()));
-                        }
-                        else if (collisionNode.Name == "name_collision")
-                        {
-                            string entityName = collisionNode.Attributes["name"].Value;
-                            List<string> stringArgs = new List<string>();
+                    AddCollisionAction(entityType, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), typeof(Methods).GetMethod(collisionNode.Attributes["method"].Value)), stringArgs.ToArray()));
+                }
+                else if (collisionNode.Name == "name_collision")
+                {
+                    string entityName = collisionNode.Attributes["name"].Value;
 
-                            foreach (XmlNode stringNode in collisionNode.ChildNodes)
-                            {
-                                stringArgs.Add(stringNode.Attributes["data"].Value);
-                            }
+                    AddCollisionAction(entityName, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), typeof(Methods).GetMethod(collisionNode.Attributes["method"].Value)), stringArgs.ToArray()));
+                }
 
-                            AddCollisionAction(entityName, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), methodsClass, collisionNode.Attributes["method"].Value), stringArgs.ToArray()));
-                        }
+                else if (collisionNode.Name == "id_collision")
+                {
+                    int entityId = Convert.ToInt16(collisionNode.Attributes["name"].Value);
 
-                        else if (collisionNode.Name == "id_collision")
-                        {
-                            int entityId = Convert.ToInt16(collisionNode.Attributes["name"].Value);
-                            List<string> stringArgs = new List<string>();
-
-                            foreach (XmlNode stringNode in collisionNode.ChildNodes)
-                            {
-                                stringArgs.Add(stringNode.Attributes["string_data"].Value);
-                            }
-
-                            AddCollisionAction(entityId, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), methodsClass, collisionNode.Attributes["method"].Value), stringArgs.ToArray()));
-                        }
-                    }
-
-                    break;
+                    AddCollisionAction(entityId, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), typeof(Methods).GetMethod(collisionNode.Attributes["method"].Value)), stringArgs.ToArray()));
                 }
             }
-
-            XmlNode imageXml = null;
-
-            foreach (XmlNode node in entityXml.ChildNodes)
-            {
-                if (node.Name == "image")
-                {
-                    imageXml = node;
-                }
-            }
-
-            if (imageXml == null)
-            {
-                throw new ArgumentException("The xml provided for this area dosen't contain an indicator tag.");
-            }
-
-            Image = imageXml.Attributes["name"].Value;
         }
 
         public void SetLocation(int[] location)
@@ -147,9 +121,6 @@ namespace GridEngine.Entities
         }
 
         public abstract object Clone();
-        //{
-        //    return new Entity(this);
-        //}
 
         public bool AddCollisionAction(Type entityType, Tuple<ColisionResponce, string[]> responce)
         {

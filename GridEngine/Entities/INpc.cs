@@ -4,7 +4,7 @@ using System.Text;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
-using GridEngine.Structures;
+//using GridEngine.Structures;
 
 namespace GridEngine.Entities
 {

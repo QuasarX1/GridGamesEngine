@@ -36,7 +36,11 @@ namespace GridEngine.Areas
 
         bool AddEntryPoint(string name, int[] location);
 
-        bool ShowArea(IPlayer player, Dictionary<ConsoleKey, Responce> playerActions, string entryPoint = "deafult");
+        bool ShowArea(IPlayer player, string entryPoint = "deafult");// Dictionary<Keys, Responce> playerActions, string entryPoint = "deafult");
+
+        bool Pause();
+
+        bool Resume();
 
         bool HideArea();
 

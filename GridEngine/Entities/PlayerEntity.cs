@@ -5,22 +5,24 @@ using System.Xml;
 using GridEngine.Areas;
 using GridEngine.Deligates;
 //using GridEngine.Structures;
+using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Entities
 {
     public class PlayerEntity : MobileEntity, IPlayer
     {
-        public Dictionary<ConsoleKey, Responce> Actions { get; protected set; }
+        public Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; protected set; }
 
-        //public PlayerEntity(string name, Dictionary<ConsoleKey, Responce> actions, DisplayChar? indicator = null) : base(name, indicator)
+
+        //public PlayerEntity(string name, Dictionary<Keys, Responce> actions, DisplayChar? indicator = null) : base(name, indicator)
         //{
         //    Actions = actions;
         //}
 
-        //public PlayerEntity(IPlayer player, Dictionary<ConsoleKey, Responce>  actions) : base(player.Name, player.Indicator)
-        //{
-        //    Actions = actions;
-        //}
+        public PlayerEntity(IPlayer player, Dictionary<Keys, Tuple<Responce, string[]>> actions) : base((MobileEntity)player)
+        {
+            Actions = actions;
+        }
 
         public PlayerEntity(PlayerEntity player): base(player)
         {
@@ -28,7 +30,7 @@ namespace GridEngine.Entities
             this.StopEngine = player.StopEngine;
         }
         
-        public PlayerEntity(XmlNode playerXml, Dictionary<ConsoleKey, Responce> actions, Type entities, Type methodsClass) : base(playerXml, entities, methodsClass)
+        public PlayerEntity(XmlNode playerXml, Dictionary<Keys, Tuple<Responce, string[]>> actions) : base(playerXml)
         {
             Actions = actions;
         }
@@ -45,13 +47,13 @@ namespace GridEngine.Entities
             while (Active == true)
             {
                 // Handle key input - on event? - start and stop?
-                ConsoleKey key = Console.ReadKey(true).Key;
+                Keys key = Console.ReadKey(true).Key;
 
                 bool? result;
 
                 if (Actions.ContainsKey(key))
                 {
-                    result = Actions[key](this);
+                    result = Actions[key].Item1(this, Actions[key].Item2);
 
                     if (result == false)
                     {
