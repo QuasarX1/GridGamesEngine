@@ -17,8 +17,7 @@ namespace GridEngine.Entities
 
         void ControllPlayer();
 
-        // Add interaction method
-        // Add looking in direction attribute and methods for rotating, changing facing, ect...
+        // Add interaction method - IInteractable
     }
 
     public delegate void StopEngineEventHandler(object sender, StopEngineEventArgs e);

@@ -33,6 +33,48 @@ namespace GridEngine
             return entity.MoveRight(Convert.ToInt16(args[0]));
         }
 
+        public static bool? TurnLeft(IMobile entity, params string[] args)
+        {
+            entity.TurnLeft(Convert.ToInt16(args[0]));
+
+            return true;
+        }
+
+        public static bool? TurnRight(IMobile entity, params string[] args)
+        {
+            entity.TurnRight(Convert.ToInt16(args[0]));
+
+            return true;
+        }
+
+        public static bool? MoveFacingUp(IMobile entity, params string[] args)
+        {
+            entity.MoveFacingUp(Convert.ToInt16(args[0]));
+
+            return true;
+        }
+
+        public static bool? MoveFacingDown(IMobile entity, params string[] args)
+        {
+            entity.MoveFacingDown(Convert.ToInt16(args[0]));
+
+            return true;
+        }
+
+        public static bool? MoveFacingLeft(IMobile entity, params string[] args)
+        {
+            entity.MoveFacingLeft(Convert.ToInt16(args[0]));
+
+            return true;
+        }
+
+        public static bool? MoveFacingRight(IMobile entity, params string[] args)
+        {
+            entity.MoveFacingRight(Convert.ToInt16(args[0]));
+
+            return true;
+        }
+
         public static bool? Respawn(IMobile entity, params string[] args)
         {
             return entity.Respawn(args[0]);

@@ -24,6 +24,26 @@ namespace GridEngine.Entities
 
         bool MoveDown(int spaces = 1);
 
+        void TurnLeft(int noTimes = 1);
+
+        void TurnRight(int noTimes = 1);
+
+        bool MoveRelitiveAhead(int spaces = 1);
+
+        bool MoveRelitiveLeft(int spaces = 1);
+
+        bool MoveRelitiveRight(int spaces = 1);
+
+        bool MoveRelitiveBehind(int spaces = 1);
+
+        bool MoveFacingUp(int spaces = 1);
+
+        bool MoveFacingDown(int spaces = 1);
+
+        bool MoveFacingLeft(int spaces = 1);
+
+        bool MoveFacingRight(int spaces = 1);
+
 
         event MoveEventHandler MoveEntity;
 

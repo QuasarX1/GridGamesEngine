@@ -28,7 +28,7 @@ namespace GridEngine.Engine
 
         public List<Keys> ReservedKeys { get; private set; }
 
-        public Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; private set; }// cnange entities to use new tuple form
+        public Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; private set; }
 
         public Dictionary<string, string> Images { get; private set; }
 

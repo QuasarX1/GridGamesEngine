@@ -39,6 +39,8 @@ namespace GridEngine.Entities
 
 
             Name = entity.Name;
+
+            ID = entity.ID;
             
             Image = entity.Image;
 
@@ -67,6 +69,9 @@ namespace GridEngine.Entities
             
             // Set the name
             Name = entityXml.Attributes["name"].Value;
+
+            // Set the id
+            Name = entityXml.Attributes["id"].Value;
 
             // Load the image name
             XmlNode entitySubNode = entityXml.FirstChild;// Selects the image node
