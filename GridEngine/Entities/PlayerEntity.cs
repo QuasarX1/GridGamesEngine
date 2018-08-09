@@ -11,13 +11,16 @@ namespace GridEngine.Entities
 {
     public class PlayerEntity : MobileEntity, IPlayer
     {
+    //- Fields and Properties
         public Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; protected set; }
 
 
-        //public PlayerEntity(string name, Dictionary<Keys, Responce> actions, DisplayChar? indicator = null) : base(name, indicator)
-        //{
-        //    Actions = actions;
-        //}
+
+    //- Constructors
+        public PlayerEntity(XmlNode playerXml, Dictionary<Keys, Tuple<Responce, string[]>> actions) : base(playerXml)
+        {
+            Actions = actions;
+        }
 
         public PlayerEntity(IPlayer player, Dictionary<Keys, Tuple<Responce, string[]>> actions) : base((MobileEntity)player)
         {
@@ -30,11 +33,6 @@ namespace GridEngine.Entities
             this.StopEngine = player.StopEngine;
         }
         
-        public PlayerEntity(XmlNode playerXml, Dictionary<Keys, Tuple<Responce, string[]>> actions) : base(playerXml)
-        {
-            Actions = actions;
-        }
-        
         public override object Clone()
         {
             return new PlayerEntity(this);
@@ -42,49 +40,35 @@ namespace GridEngine.Entities
             //return new PlayerEntity(Name, Actions, Indicator);
         }
 
-        public void ControllPlayer()
+
+    //- Operation methods
+        public void OnKeyPressed(Keys key)
         {
-            while (Active == true)
+            bool? result;
+
+            if (Actions.ContainsKey(key))
             {
-                // Handle key input - on event? - start and stop?
-                Keys key = Console.ReadKey(true).Key;
+                result = Actions[key].Item1(this, Actions[key].Item2);
 
-                bool? result;
-
-                if (Actions.ContainsKey(key))
+                if (result == false)
                 {
-                    result = Actions[key].Item1(this, Actions[key].Item2);
-
-                    if (result == false)
-                    {
-                        Console.Beep();
-                        System.Threading.Thread.Sleep(200);
-                    }
-                    else if (result == null)
-                    {
-                        break;
-                    }
+                    //Console.Beep();
+                    //System.Threading.Thread.Sleep(200);
                 }
-                else
+                else if (result == null)
                 {
-                    Console.Beep();
+                    OnRaiseEndEvent(null);
                 }
-
-                // Clear keyboard buffer
-                while (Console.KeyAvailable == true)
-                {
-                    Console.ReadKey(true);
-                }
-
-                //System.Threading.Thread.Sleep(250);
             }
-
-            if (Active == true)
+            else
             {
-                OnRaiseEndEvent(null);
+                //Console.Beep();
             }
         }
 
+        
+
+    //- Events
         public event StopEngineEventHandler StopEngine;
 
         protected virtual void OnRaiseEndEvent(StopEngineEventArgs e)

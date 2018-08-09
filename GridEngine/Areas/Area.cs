@@ -12,6 +12,9 @@ namespace GridEngine.Areas
 {
     public class Area: IArea
     {
+    //- Fields and Properties
+        public IGameHost Host { get; protected set; }
+
         public string[,] Grid { get; protected set; }
 
         public string[,] DisplayGrid { get { return (string[,])Grid.Clone(); } }
@@ -30,52 +33,19 @@ namespace GridEngine.Areas
 
         public Dictionary<string, IEntity> Entities { get; protected set; }
 
-        public System.Threading.Thread ControllPlayerThread { get; protected set; }
+        //public System.Threading.Thread ControllPlayerThread { get; protected set; }
 
         public List<System.Threading.Thread> ControllNPCThreads { get; protected set; }
 
         public string PlayerName { get; protected set; }
 
         
-        public Area(IArea area)
+
+    //- Constructors
+        public Area(XmlNode areaXml, IGameHost host)
         {
-            // Duplicate the border boolean
-            //Border = area.Border;
-            
-            Grid = new string[area.Grid.GetLength(0), area.Grid.GetLength(1)];
+            Host = host;
 
-            Updates = new Queue<Tuple<int[], int[]>>();
-
-            EmptySpaceImage = area.EmptySpaceImage;
-
-            Focus = area.Focus;
-
-            Entities = new Dictionary<string, IEntity>();
-
-            foreach (KeyValuePair<string, IEntity> entity in area.Entities)
-            {
-                //Entities[entity.Key] = (IEntity)entity.Value.Clone();
-                AddEntity((IEntity)entity.Value.Clone(), entity.Value.Location);
-            }
-
-            EntryPoints = new Dictionary<string, int[]>();
-
-            foreach (KeyValuePair<string, int[]> entry in area.EntryPoints)
-            {
-                EntryPoints[entry.Key] = entry.Value;
-            }
-
-            for (int i = 0; i < Grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < Grid.GetLength(1); j++)
-                {
-                    Grid[i, j] = area.Grid[i, j];
-                }
-            }
-        }
-
-        public Area(XmlNode areaXml)
-        {
             int width = Convert.ToInt32(areaXml.Attributes["width"].Value);
             int height = Convert.ToInt32(areaXml.Attributes["height"].Value);
 
@@ -143,16 +113,56 @@ namespace GridEngine.Areas
 
             foreach (XmlNode entity in xmlEntites.ChildNodes)
             {
-                AddEntity((IEntity)Activator.CreateInstance(entities.GetNestedType(entity.Attributes["type"].Value), entity, entities, methodsClass), new int[2] { Convert.ToInt32(entity.Attributes["start_x"].Value), Convert.ToInt32(entity.Attributes["start_y"].Value) });
+                AddEntity((IEntity)Activator.CreateInstance(Type.GetType("GridEngine.Entities." + entity.Attributes["type"].Value), entity), new int[2] { Convert.ToInt32(entity.Attributes["start_x"].Value), Convert.ToInt32(entity.Attributes["start_y"].Value) });
             }
         }
 
+        public Area(IArea area)
+        {
+            // Duplicate the border boolean
+            //Border = area.Border;
+
+            Host = area.Host;
+            
+            Grid = new string[area.Grid.GetLength(0), area.Grid.GetLength(1)];
+
+            Updates = new Queue<Tuple<int[], int[]>>();
+
+            EmptySpaceImage = area.EmptySpaceImage;
+
+            Focus = area.Focus;
+
+            Entities = new Dictionary<string, IEntity>();
+
+            foreach (KeyValuePair<string, IEntity> entity in area.Entities)
+            {
+                //Entities[entity.Key] = (IEntity)entity.Value.Clone();
+                AddEntity((IEntity)entity.Value.Clone(), entity.Value.Location);
+            }
+
+            EntryPoints = new Dictionary<string, int[]>();
+
+            foreach (KeyValuePair<string, int[]> entry in area.EntryPoints)
+            {
+                EntryPoints[entry.Key] = entry.Value;
+            }
+
+            for (int i = 0; i < Grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < Grid.GetLength(1); j++)
+                {
+                    Grid[i, j] = area.Grid[i, j];
+                }
+            }
+        }
+        
         public virtual object Clone()
         {
             return new Area(this);
         }
 
-        // Add subscription to KeyPress
+
+    //- Addition methods
         public bool AddEntity(IEntity entity, int[] location)
         {
             if (Entities.ContainsKey(entity.Name))
@@ -198,162 +208,8 @@ namespace GridEngine.Areas
             return true;
         }
 
-        public static string[,] FormGrid(XmlNode gridData, int width, int height)
-        {
-            string[,] grid = new string[width, height];
 
-            int y = 0;
-
-            foreach (XmlNode row in gridData.ChildNodes)
-            {
-                if (row.Name == "row")
-                {
-                    int x = 0;
-                    foreach (XmlNode Item in row.ChildNodes)
-                    {
-                        if (Item.Name == "Null")
-                        {
-                            grid[x, y] = null;
-                        }
-                        else
-                        {
-                            grid[x, y] = Item.Attributes["name"].Value;
-                        }
-
-                        x++;
-                    }
-                }
-
-                y++;
-            }
-
-            return grid;
-        }
-
-        public bool ShowArea(IPlayer player, string entryPoint = "deafult")// Dictionary<Keys, Tuple<ColisionResponce, string[]>> playerActions, string entryPoint = "deafult")
-        {
-            if (EntryPoints == null)
-            {
-                throw new InvalidOperationException("No entry points have been defined. An area must have at least one entry point defined.");
-            }
-            if (EntryPoints.ContainsKey("entryPoint"))
-            {
-                throw new InvalidOperationException("The entry point provided dosen't exist.");
-            }
-            if (Entities.ContainsKey(player.Name))
-            {
-                throw new ArgumentException("An entity with the same name allready exists.");
-            }
-
-            // Add the player entity
-            PlayerName = player.Name;
-            AddEntity(player, EntryPoints[entryPoint]);
-
-            // Ready the console window
-            Console.Clear();
-            Console.WindowWidth = Grid.GetLength(0);
-            Console.WindowHeight = Grid.GetLength(1);
-
-            if (Console.WindowWidth < 40)
-            {
-                Console.WindowWidth = 40;
-            }
-
-            if (Console.WindowHeight < 20)
-            {
-                Console.WindowHeight = 20;
-            }
-
-            // Make the area the focus
-            Focus = true;
-
-            // Make this area's entities active
-            foreach (KeyValuePair<string, IEntity> entity in Entities)
-            {
-                entity.Value.Active = true;
-            }
-
-            // Draw the area on the console
-            List<Tuple<int[], int[]>> positions = new List<Tuple<int[], int[]>>();
-            for (int i = 0; i < Grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < Grid.GetLength(1); j++)
-                {
-                    positions.Add(new Tuple<int[], int[]>(new int[2] { i, j }, null));
-                }
-            }
-            UpdateDisplay(positions);
-
-            // Create the player and NPC threads
-            ControllPlayerThread = new System.Threading.Thread(new System.Threading.ThreadStart(((IPlayer)Entities[PlayerName]).ControllPlayer));
-            
-            ControllNPCThreads = new List<System.Threading.Thread>();
-            
-            foreach (KeyValuePair<string, IEntity> entity in Entities)
-            {
-                if (entity.Value is INpc)
-                {
-                    ControllNPCThreads.Add(new System.Threading.Thread(new System.Threading.ThreadStart(((INpc)entity.Value).ControllEntity)));
-                }
-            }
-
-            // Start the threads
-            ControllPlayerThread.Start();
-
-            foreach (System.Threading.Thread thread in ControllNPCThreads)
-            {
-                thread.IsBackground = true;// Kills the threads when the player thread terminates
-                thread.Start();
-            }
-
-            return true;
-        }
-
-        public bool Pause()
-        {
-            return true;
-        }
-
-        public bool Resume()
-        {
-            return true;
-        }
-
-        public bool HideArea()
-        {
-            // Cause threads to terminate and prevent any further event handeling
-            foreach (KeyValuePair<string, IEntity> entity in Entities)
-            {
-                entity.Value.Active = false;
-            }
-
-            Focus = false;
-
-            int[] playerLocation = Entities[PlayerName].Location;
-
-            Grid[playerLocation[0], playerLocation[1]] = null;
-
-            ((IPlayer)Entities[PlayerName]).MoveEntity -= Move;
-            EntityCollision -= ((IPlayer)Entities[PlayerName]).Collision;
-
-            foreach (KeyValuePair<string, IEntity> entity in Entities)
-            {
-                EntityCollision -= entity.Value.Collision;
-
-                if (entity.Value is IMobile)
-                {
-                    ((IMobile)entity.Value).MoveEntity -= Move;
-                }
-            }
-
-            //Entities[PlayerName]. // Delete player copy here??
-            Entities[PlayerName] = null;
-
-            Entities.Remove(PlayerName);
-
-            return true;
-        }
-
+    //- Updating methods
         public virtual bool UpdateDisplay(List<Tuple<int[], int[]>> updates)
         {
             foreach (Tuple<int[], int[]> update in updates)
@@ -363,7 +219,7 @@ namespace GridEngine.Areas
 
             return true;
         }
-
+        
         public bool Swap(int[] l1, int[] l2)
         {
             string temp = Grid[l1[0], l1[1]];
@@ -470,6 +326,8 @@ namespace GridEngine.Areas
             return nearbyEntities;
         }
 
+
+    //- Property control methods
         public int GetWidth()
         {
             int width = Grid.GetLength(0);
@@ -484,7 +342,123 @@ namespace GridEngine.Areas
             return height;
         }
 
-        
+
+    //- Operation methods
+        public bool ShowArea(IPlayer player, string entryPoint = "deafult")// Dictionary<Keys, Tuple<ColisionResponce, string[]>> playerActions, string entryPoint = "deafult")
+        {
+            if (EntryPoints == null)
+            {
+                throw new InvalidOperationException("No entry points have been defined. An area must have at least one entry point defined.");
+            }
+            if (EntryPoints.ContainsKey("entryPoint"))
+            {
+                throw new InvalidOperationException("The entry point provided dosen't exist.");
+            }
+            if (Entities.ContainsKey(player.Name))
+            {
+                throw new ArgumentException("An entity with the same name allready exists.");
+            }
+
+            //- Add the player entity
+            PlayerName = player.Name;
+            AddEntity(player, EntryPoints[entryPoint]);
+
+            //- Add subscriptions to host events
+            Host.KeyPress += ((IPlayer)Entities[PlayerName]).OnKeyPressed;
+
+            //- Make the area the focus
+            Focus = true;
+
+            //- Make this area's entities active
+            foreach (KeyValuePair<string, IEntity> entity in Entities)
+            {
+                entity.Value.Active = true;
+            }
+
+            //- Draw the area on the console
+            List<Tuple<int[], int[]>> positions = new List<Tuple<int[], int[]>>();
+            for (int i = 0; i < Grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < Grid.GetLength(1); j++)
+                {
+                    positions.Add(new Tuple<int[], int[]>(new int[2] { i, j }, null));
+                }
+            }
+            UpdateDisplay(positions);
+
+            //- Create the player and NPC threads
+            //ControllPlayerThread = new System.Threading.Thread(new System.Threading.ThreadStart(((IPlayer)Entities[PlayerName]).ControllPlayer));
+
+            ControllNPCThreads = new List<System.Threading.Thread>();
+
+            foreach (KeyValuePair<string, IEntity> entity in Entities)
+            {
+                if (entity.Value is INpc)
+                {
+                    ControllNPCThreads.Add(new System.Threading.Thread(new System.Threading.ThreadStart(((INpc)entity.Value).ControllEntity)));
+                }
+            }
+
+            //- Start the threads
+            //ControllPlayerThread.Start();
+
+            foreach (System.Threading.Thread thread in ControllNPCThreads)
+            {
+                thread.IsBackground = true;// Kills the threads when the player thread terminates
+                thread.Start();
+            }
+
+            return true;
+        }
+
+        public bool Pause()
+        {
+            return true;
+        }
+
+        public bool Resume()
+        {
+            return true;
+        }
+
+        public bool HideArea()
+        {
+            // Cause threads to terminate and prevent any further event handeling
+            foreach (KeyValuePair<string, IEntity> entity in Entities)
+            {
+                entity.Value.Active = false;
+            }
+
+            Focus = false;
+
+            int[] playerLocation = Entities[PlayerName].Location;
+
+            Grid[playerLocation[0], playerLocation[1]] = null;
+
+            ((IPlayer)Entities[PlayerName]).MoveEntity -= Move;
+            EntityCollision -= ((IPlayer)Entities[PlayerName]).Collision;
+
+            foreach (KeyValuePair<string, IEntity> entity in Entities)
+            {
+                EntityCollision -= entity.Value.Collision;
+
+                if (entity.Value is IMobile)
+                {
+                    ((IMobile)entity.Value).MoveEntity -= Move;
+                }
+            }
+
+            //Entities[PlayerName]. // Delete player copy here??
+            Entities[PlayerName] = null;
+
+            Entities.Remove(PlayerName);
+
+            return true;
+        }
+
+
+
+        //- Events
         public event EntityCollisionEventHandler EntityCollision;
 
         protected virtual void OnRaiseEntityCollision(EntityCollisionEventArgs e)
@@ -497,6 +471,41 @@ namespace GridEngine.Areas
         public virtual void OnRaiseKeyPress(KeyPressEventArgs e)
         {
             KeyPress?.Invoke(this, e);
+        }
+
+
+
+    //- Static methods
+        public static string[,] FormGrid(XmlNode gridData, int width, int height)
+        {
+            string[,] grid = new string[width, height];
+
+            int y = 0;
+
+            foreach (XmlNode row in gridData.ChildNodes)
+            {
+                if (row.Name == "row")
+                {
+                    int x = 0;
+                    foreach (XmlNode Item in row.ChildNodes)
+                    {
+                        if (Item.Name == "Null")
+                        {
+                            grid[x, y] = null;
+                        }
+                        else
+                        {
+                            grid[x, y] = Item.Attributes["name"].Value;
+                        }
+
+                        x++;
+                    }
+                }
+
+                y++;
+            }
+
+            return grid;
         }
     }
 }

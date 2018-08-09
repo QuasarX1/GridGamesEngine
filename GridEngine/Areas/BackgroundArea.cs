@@ -11,31 +11,14 @@ namespace GridEngine.Areas
 {
     public class BackgroundArea: Area, IBackgroundArea
     {
+    //- Fields and Properties
         public string[,] Background { get; protected set; }
 
         public new string[,] DisplayGrid { get; protected set; }
 
-        //public BackgroundArea(DisplayChar?[,] background, bool border = false, DisplayChar? emptyChar = null) : base(background.GetLength(0), background.GetLength(1), border, emptyChar)
-        //{
-        //    Background = background;
-        //}
 
-        public BackgroundArea(BackgroundArea area): base(area)
-        {
-            Background = new string[area.Background.GetLength(0), area.Background.GetLength(1)];
-
-            for (int i = 0; i < Background.GetLength(0); i++)
-            {
-                for (int j = 0; j < Background.GetLength(1); j++)
-                {
-                    Background[i, j] = area.Background[i, j];
-                }
-            }
-
-            DisplayGrid = new string[area.Background.GetLength(0), area.Background.GetLength(1)];
-        }
-
-        public BackgroundArea(XmlNode areaXml) : base(areaXml)
+    //- Constructors
+        public BackgroundArea(XmlNode areaXml, IGameHost host) : base(areaXml, host)
         {
             //XmlNode backgroundXml = null;
 
@@ -70,11 +53,27 @@ namespace GridEngine.Areas
             UpdateDisplay(updates);
         }
 
+        public BackgroundArea(BackgroundArea area) : base(area)
+        {
+            Background = new string[area.Background.GetLength(0), area.Background.GetLength(1)];
+
+            for (int i = 0; i < Background.GetLength(0); i++)
+            {
+                for (int j = 0; j < Background.GetLength(1); j++)
+                {
+                    Background[i, j] = area.Background[i, j];
+                }
+            }
+
+            DisplayGrid = new string[area.Background.GetLength(0), area.Background.GetLength(1)];
+        }
+
         public override object Clone()
         {
             return new BackgroundArea(this);
         }
 
+    //- Updating methods
         public override bool UpdateDisplay(List<Tuple<int[], int[]>> updates)
         {
             ((IArea)this).UpdateDisplay(updates);

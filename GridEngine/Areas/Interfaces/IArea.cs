@@ -11,9 +11,11 @@ namespace GridEngine.Areas
 {
     public interface IArea: ICloneable
     {
+        IGameHost Host { get; }
+
         event EntityCollisionEventHandler EntityCollision;
 
-        System.Threading.Thread ControllPlayerThread { get; }
+        //System.Threading.Thread ControllPlayerThread { get; }
 
         List<System.Threading.Thread> ControllNPCThreads { get; }
 

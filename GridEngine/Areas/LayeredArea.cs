@@ -15,7 +15,7 @@ namespace GridEngine.Areas
 
         }
 
-        public LayeredArea(XmlNode areaXml): base(areaXml)
+        public LayeredArea(XmlNode areaXml, IGameHost host) : base(areaXml, host)
         {
 
         }

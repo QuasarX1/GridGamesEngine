@@ -16,6 +16,7 @@ namespace GridEngine.Engine
 {
     public sealed class Engine
     {
+    //- Fields and Properties
         public string Name { get; private set; }
 
         private XmlDocument GameData;
@@ -33,7 +34,10 @@ namespace GridEngine.Engine
         public Dictionary<string, string> Images { get; private set; }
 
 
-        public Engine(XmlDocument gameData)
+
+    //- Constructors
+        // use host's other events to pause/resume ect...
+        public Engine(XmlDocument gameData, IGameHost host)
         {
         //- Validate the XML document
             GameData = gameData;
@@ -55,7 +59,7 @@ namespace GridEngine.Engine
 
             foreach (XmlNode node in gameSubNode)
             {
-                Areas[node.Attributes["name"].Value] = (IArea)Activator.CreateInstance(Type.GetType(node.Attributes["type"].Value), node);
+                Areas[node.Attributes["name"].Value] = (IArea)Activator.CreateInstance(Type.GetType(node.Attributes["type"].Value), node, host);
             }
             
         //- Add player and actions
@@ -87,6 +91,8 @@ namespace GridEngine.Engine
             }
         }
 
+
+    //- Addition methods
         public void AddPlayer(XmlNode playerXml, Type playerClass)
         {
             Player = (IPlayer)Activator.CreateInstance(playerClass, playerXml, Actions);
@@ -99,44 +105,6 @@ namespace GridEngine.Engine
             Player = new PlayerEntity(player, Actions);
 
             Player.StopEngine += End;
-        }
-
-        public void Start(string startAreaName = "Start")
-        {
-            if (Player == null)
-            {
-                throw new InvalidOperationException("No player has yet been defined.");
-            }
-            
-            ActiveArea = (IArea)Areas["Start"].Clone();
-
-            ActiveArea.ShowArea((IPlayer)Player.Clone());//, Actions);
-        }
-
-        public void ChangeArea(string areaName, string entryPoint = "deafult")
-        {
-            ActiveArea.HideArea();
-
-            ActiveArea = (IArea)Areas[areaName].Clone();
-
-            ActiveArea.ShowArea((IPlayer)Player.Clone(), entryPoint);//, Actions, entryPoint);
-        }
-
-        public void OpenMenu()
-        {
-            ActiveArea.Pause();// Pause area
-            // Open menu
-        }
-
-        public void CloseMenu()
-        {
-            // change to event handeler
-            ActiveArea.Resume();// Resume area
-        }
-
-        public void End(object sender, StopEngineEventArgs e)
-        {
-            OnRaiseEngineStopped(new EngineStoppedEventArgs());
         }
 
         /// <summary>
@@ -194,6 +162,8 @@ namespace GridEngine.Engine
             }
         }
 
+
+    //- Removal methods
         public void RemoveKeyAction(Keys key)
         {
             if (ReservedKeys.Contains(key))
@@ -226,6 +196,49 @@ namespace GridEngine.Engine
             }
         }
 
+
+        //- Operation methods
+        public void Start(string startAreaName = "Start")
+        {
+            if (Player == null)
+            {
+                throw new InvalidOperationException("No player has yet been defined.");
+            }
+            
+            ActiveArea = (IArea)Areas["Start"].Clone();
+
+            ActiveArea.ShowArea((IPlayer)Player.Clone());//, Actions);
+        }
+
+        public void ChangeArea(string areaName, string entryPoint = "deafult")
+        {
+            ActiveArea.HideArea();
+
+            ActiveArea = (IArea)Areas[areaName].Clone();
+
+            ActiveArea.ShowArea((IPlayer)Player.Clone(), entryPoint);//, Actions, entryPoint);
+        }
+
+        public void OpenMenu()
+        {
+            ActiveArea.Pause();// Pause area
+            // Open menu
+        }
+
+        public void CloseMenu()
+        {
+            // change to event handeler
+            ActiveArea.Resume();// Resume area
+        }
+
+        public void End(object sender, StopEngineEventArgs e)
+        {
+            OnRaiseEngineStopped(new EngineStoppedEventArgs());
+        }
+
+        
+
+    //- Events
         public event EngineStoppedEventHandler EngineStop;
 
         public void OnRaiseEngineStopped(EngineStoppedEventArgs e)

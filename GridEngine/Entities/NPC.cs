@@ -10,8 +10,7 @@ namespace GridEngine.Entities
 {
     public class NPC: MobileEntity, INpc
     {
-        //public NPC(string name, DisplayChar? indicator = null): base(name, indicator) { }
-
+    //- Constructors
         public NPC(NPC npc) : base(npc) { }
 
         public override object Clone()
@@ -19,6 +18,8 @@ namespace GridEngine.Entities
             return new NPC(this);
         }
 
+
+    //- Operation methods
         public void ControllEntity()
         {
             while (Active == true)

@@ -10,6 +10,7 @@ namespace GridEngine.Entities
 {
     public abstract class Entity: IEntity
     {
+    //- Fields and Properties
         public Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>> CollisionActions { get; protected set; }
 
         public string Name { get; protected set; }
@@ -23,46 +24,8 @@ namespace GridEngine.Entities
         public bool Active { get; set; }
 
 
-        // Obsolite?
-        //public Entity(string name, string image)
-        //{
-        //    Name = name;
-
-        //    CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
-
-        //    Image = image;
-        //}
-
-        public Entity(Entity entity)
-        {
-            CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
-
-
-            Name = entity.Name;
-
-            ID = entity.ID;
-            
-            Image = entity.Image;
-
-            SetLocation(entity.Location);
-
-            foreach (KeyValuePair<Tuple<string, object>, Tuple<ColisionResponce, string[]>> action in entity.CollisionActions)
-            {
-                if (action.Key.Item1 == "type")
-                {
-                    AddCollisionAction((Type)action.Key.Item2, action.Value);
-                }
-                else if (action.Key.Item1 == "name")
-                {
-                    AddCollisionAction((string)action.Key.Item2, action.Value);
-                }
-                else if (action.Key.Item1 == "id")
-                {
-                    AddCollisionAction((int)action.Key.Item2, action.Value);
-                }
-            }
-        }
-
+        
+    //- Constructors
         public Entity(XmlNode entityXml)
         {
             CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
@@ -94,7 +57,6 @@ namespace GridEngine.Entities
                 {
                     Type entityType = Type.GetType("GridEngine.Entities." + collisionNode.Attributes["type"].Value);
                     
-
                     AddCollisionAction(entityType, new Tuple<ColisionResponce, string[]>((ColisionResponce)Delegate.CreateDelegate(typeof(ColisionResponce), typeof(Methods).GetMethod(collisionNode.Attributes["method"].Value)), stringArgs.ToArray()));
                 }
                 else if (collisionNode.Name == "name_collision")
@@ -113,20 +75,40 @@ namespace GridEngine.Entities
             }
         }
 
-        public void SetLocation(int[] location)
+        public Entity(Entity entity)
         {
-            if (location != null)
+            CollisionActions = new Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>>();
+
+
+            Name = entity.Name;
+
+            ID = entity.ID;
+
+            Image = entity.Image;
+
+            SetLocation(entity.Location);
+
+            foreach (KeyValuePair<Tuple<string, object>, Tuple<ColisionResponce, string[]>> action in entity.CollisionActions)
             {
-                Location = (int[])location.Clone();
-            }
-            else
-            {
-                Location = null;
+                if (action.Key.Item1 == "type")
+                {
+                    AddCollisionAction((Type)action.Key.Item2, action.Value);
+                }
+                else if (action.Key.Item1 == "name")
+                {
+                    AddCollisionAction((string)action.Key.Item2, action.Value);
+                }
+                else if (action.Key.Item1 == "id")
+                {
+                    AddCollisionAction((int)action.Key.Item2, action.Value);
+                }
             }
         }
 
         public abstract object Clone();
 
+
+    //- Addition methods
         public bool AddCollisionAction(Type entityType, Tuple<ColisionResponce, string[]> responce)
         {
             if (!CollisionActions.ContainsKey(new Tuple<string, object>("type", entityType)))
@@ -166,6 +148,8 @@ namespace GridEngine.Entities
             }
         }
 
+
+    //- Removal methods
         public void RemoveCollisionAction(Type entityType)
         {
             if (CollisionActions.ContainsKey(new Tuple<string, object>("type", entityType)))
@@ -232,21 +216,8 @@ namespace GridEngine.Entities
             }
         }
 
-        public void Collision(object sender, EntityCollisionEventArgs e)
-        {
-            if (Active == true)
-            {
-                if (e.Entity1.Name == Name)
-                {
-                    OnCollision(e.Entity2, (IArea)sender);
-                }
-                else if (e.Entity2.Name == Name)
-                {
-                    OnCollision(e.Entity1, (IArea)sender);
-                }
-            }
-        }
 
+    //- Updating methods
         public void OnCollision(IEntity otherEntity, IArea area)
         {
             foreach (KeyValuePair<Tuple<string, object>, Tuple<ColisionResponce, string[]>> CollisionAction in CollisionActions)
@@ -283,6 +254,39 @@ namespace GridEngine.Entities
         }
 
 
+    //- Property control methods
+        public void SetLocation(int[] location)
+        {
+            if (location != null)
+            {
+                Location = (int[])location.Clone();
+            }
+            else
+            {
+                Location = null;
+            }
+        }
+        
+
+    //- Operation methods
+        public void Collision(object sender, EntityCollisionEventArgs e)
+        {
+            if (Active == true)
+            {
+                if (e.Entity1.Name == Name)
+                {
+                    OnCollision(e.Entity2, (IArea)sender);
+                }
+                else if (e.Entity2.Name == Name)
+                {
+                    OnCollision(e.Entity1, (IArea)sender);
+                }
+            }
+        }
+
+
+
+    //- Events
         public event GetProximityEventHandler GetProximity;
 
         protected virtual Dictionary<string, int[]> OnRaiseGetProximity(GetProximityEventArgs e)

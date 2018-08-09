@@ -11,22 +11,20 @@ namespace GridEngine.Entities
 {
     public abstract class MobileEntity: Entity, IMobile
     {
+    //- Fields and Properties
         public Direction Facing { get; protected set; }
 
 
-        //public MobileEntity(string name, DisplayChar? indicator = null) : base(name, indicator) { }
+
+    //- Constructors
+        public MobileEntity(XmlNode entityXml) : base(entityXml) { }
 
         //private MobileEntity(IEntity entity) : base(entity.Name, entity.Indicator) { }
 
         public MobileEntity(MobileEntity entity) : base(entity) { }
 
-        public MobileEntity(XmlNode entityXml) : base(entityXml) { }
-
-        //public override object Clone()
-        //{
-        //    return new MobileEntity(this);
-        //}
-
+        
+    //- Operation methods
         public bool Move(int[] newLocation)
         {            
             if (OnRaiseMoveEntity(new MoveEntityEventArgs((int[])Location.Clone(), (int[])newLocation.Clone())) == true)
@@ -266,6 +264,8 @@ namespace GridEngine.Entities
         }
 
 
+
+    //- Events
         public event MoveEventHandler MoveEntity;
 
         protected virtual bool OnRaiseMoveEntity(MoveEntityEventArgs e)
