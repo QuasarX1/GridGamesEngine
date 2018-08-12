@@ -4,12 +4,19 @@ using System.Text;
 
 using GridEngine.Areas;
 using GridEngine.Deligates;
+using GridEngine.Enums;
 //using GridEngine.Structures;
 
 namespace GridEngine.Entities
 {
     public interface IMobile: IEntity
     {
+    //- Properties
+        Direction Facing { get; }
+
+
+
+    //- Operation methods
         bool Move(int[] newLocation);
 
         bool Respawn(string entryPoint);
@@ -45,6 +52,8 @@ namespace GridEngine.Entities
         bool MoveFacingRight(int spaces = 1);
 
 
+
+    //- Events
         event MoveEventHandler MoveEntity;
 
         event RespawnEventHandler RespawnEntity;

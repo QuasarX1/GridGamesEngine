@@ -80,9 +80,9 @@ namespace GridEngine
             return entity.Respawn(args[0]);
         }
 
-        public static bool? CheckFront(IInteractable entity, params string[] args)
+        public static bool? Interact(IInteractable entity, params string[] args)
         {
-            return entity.CheckFront();
+            return entity.Interact();
         }
 
         public static bool? Attack(IInteractable entity, params string[] args)

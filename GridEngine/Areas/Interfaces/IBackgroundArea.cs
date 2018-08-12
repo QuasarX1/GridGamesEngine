@@ -4,7 +4,11 @@ using System.Text;
 
 namespace GridEngine.Areas
 {
-    public interface IBackgroundArea: IArea
+    public partial interface IBackgroundArea: IArea
     {
+    //- Fields and Properties
+        string[,] Background { get; }
+
+        new string[,] DisplayGrid { get; }
     }
 }

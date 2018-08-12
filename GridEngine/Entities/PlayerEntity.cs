@@ -9,7 +9,7 @@ using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Entities
 {
-    public class PlayerEntity : MobileEntity, IPlayer
+    public class PlayerEntity : MobileEntity, IPlayer// Add interaction method - IInteractable
     {
     //- Fields and Properties
         public Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; protected set; }

@@ -15,14 +15,14 @@ namespace GridEngine.Entities
 
         public string Name { get; protected set; }
 
-        public int ID { get; protected set; }// Add in constructors
+        public int ID { get; protected set; }
 
         public int[] Location { get; protected set; }
 
         public string Image { get; protected set; }
 
         public bool Active { get; set; }
-
+        
 
         
     //- Constructors

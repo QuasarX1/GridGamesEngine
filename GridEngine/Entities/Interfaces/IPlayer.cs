@@ -9,17 +9,20 @@ using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Entities
 {
-    public interface IPlayer: IMobile, IInteractable
+    public interface IPlayer: IMobile, ICombatable
     {
-        event StopEngineEventHandler StopEngine;
-
+    //- Fields and Properties
         Dictionary<Keys, Tuple<Responce, string[]>> Actions { get; }
 
-        //void ControllPlayer();
 
-        // Add interaction method - IInteractable
 
+    //- Operation methods
         void OnKeyPressed(Keys key);
+
+
+
+    //- Events
+        event StopEngineEventHandler StopEngine;
     }
 
     public delegate void StopEngineEventHandler(object sender, StopEngineEventArgs e);

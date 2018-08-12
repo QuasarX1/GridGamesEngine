@@ -10,6 +10,7 @@ namespace GridEngine.Entities
 {
     public interface INpc : IMobile
     {
+    //- Operation methods
         void ControllEntity();
 
         void Action();

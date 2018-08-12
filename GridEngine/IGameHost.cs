@@ -8,6 +8,7 @@ namespace GridEngine
 {
     public interface IGameHost
     {
+    //- Events
         event Action<Keys> KeyPress;
 
         event Action Suspend;

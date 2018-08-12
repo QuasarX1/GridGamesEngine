@@ -10,6 +10,7 @@ namespace GridEngine.Entities
 {
     public interface IEntity: ICloneable
     {
+    //- Properties
         Dictionary<Tuple<string, object>, Tuple<ColisionResponce, string[]>> CollisionActions { get; }
 
         string Name { get; }
@@ -23,14 +24,15 @@ namespace GridEngine.Entities
         bool Active { get; set; }
 
 
-        void SetLocation(int[] location);
-
+    //- Addition methods
         bool AddCollisionAction(Type entityType, Tuple<ColisionResponce, string[]> responce);
 
         bool AddCollisionAction(string entityName, Tuple<ColisionResponce, string[]> responce);
 
         bool AddCollisionAction(int entityId, Tuple<ColisionResponce, string[]> responce);
 
+
+    //- Removal methods
         void RemoveCollisionAction(Type entityType);
 
         void RemoveCollisionAction(string entityName);
@@ -43,11 +45,21 @@ namespace GridEngine.Entities
 
         bool RemoveCollisionActionOrFail(int entityId);
 
-        void Collision(object sender, EntityCollisionEventArgs e);
 
+    //- Updating methods
         void OnCollision(IEntity otherEntity, IArea area);
 
 
+    //- Property control methods
+        void SetLocation(int[] location);
+
+
+    //- Operation methods
+        void Collision(object sender, EntityCollisionEventArgs e);
+
+
+
+    //- Events
         event GetProximityEventHandler GetProximity;
     }
 

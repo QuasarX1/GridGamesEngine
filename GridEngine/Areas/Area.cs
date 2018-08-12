@@ -23,8 +23,6 @@ namespace GridEngine.Areas
 
         public Tuple<int[], int[]> NextUpdate { get { return Updates.Dequeue(); } }
 
-        //public bool Border { get; protected set; }
-
         public Dictionary<string, int[]> EntryPoints { get; protected set; }
 
         public string EmptySpaceImage { get; protected set; }
@@ -181,7 +179,10 @@ namespace GridEngine.Areas
 
                 entity.SetLocation(location);
 
+                // Subscribe to events
                 EntityCollision += entity.Collision;
+
+                entity.GetProximity += GetProximity;
 
                 if (entity is IMobile)
                 {
@@ -189,7 +190,11 @@ namespace GridEngine.Areas
                     ((IMobile)entity).RespawnEntity += Move;
                 }
 
-                entity.GetProximity += GetProximity;
+                if (entity is IInteractable)
+                {
+                    ((IInteractable)entity).GetAtLocation += GetAtLocation;
+                    ((IInteractable)entity).Interact += (object sender, EntityInteractionEventArgs e) => { ((IInteractable)Entities[e.Target.Name]).InteractWith(sender, e); };
+                }
 
                 Entities[entity.Name] = entity;
 
@@ -220,19 +225,19 @@ namespace GridEngine.Areas
             return true;
         }
         
-        public bool Swap(int[] l1, int[] l2)
-        {
-            string temp = Grid[l1[0], l1[1]];
-            Grid[l1[0], l1[1]] = Grid[l2[0], l2[1]];
-            Grid[l2[0], l2[1]] = temp;
+        //public bool Swap(int[] l1, int[] l2)
+        //{
+        //    string temp = Grid[l1[0], l1[1]];
+        //    Grid[l1[0], l1[1]] = Grid[l2[0], l2[1]];
+        //    Grid[l2[0], l2[1]] = temp;
 
-            if (Focus == true)
-            {
-                UpdateDisplay(new List<Tuple<int[], int[]>> { new Tuple<int[], int[]>(l1, l2) });
-            }
+        //    if (Focus == true)
+        //    {
+        //        UpdateDisplay(new List<Tuple<int[], int[]>> { new Tuple<int[], int[]>(l1, l2) });
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public bool Move(object entity, MoveEntityEventArgs e)
         {
@@ -311,21 +316,6 @@ namespace GridEngine.Areas
             return new Tuple<bool, int[]>(true, newLocation);
         }
 
-        public Dictionary<string, int[]> GetProximity(object sender, GetProximityEventArgs e)
-        {
-            Dictionary<string, int[]> nearbyEntities = new Dictionary<string, int[]>();
-
-            foreach (KeyValuePair<string, IEntity> entity in Entities)
-            {
-                if (entity.Value.Location[0] >= e.Location[0] - e.XDistance && entity.Value.Location[0] <= e.Location[0] + e.XDistance && entity.Value.Location[1] >= e.Location[1] - e.YDistance && entity.Value.Location[1] <= e.Location[1] + e.YDistance)
-                {
-                    nearbyEntities[entity.Key] = (int[])entity.Value.Location.Clone();
-                }
-            }
-
-            return nearbyEntities;
-        }
-
 
     //- Property control methods
         public int GetWidth()
@@ -342,8 +332,28 @@ namespace GridEngine.Areas
             return height;
         }
 
+        public Dictionary<string, int[]> GetProximity(object sender, GetProximityEventArgs e)
+        {
+            Dictionary<string, int[]> nearbyEntities = new Dictionary<string, int[]>();
 
-    //- Operation methods
+            foreach (KeyValuePair<string, IEntity> entity in Entities)
+            {
+                if (entity.Value.Location[0] >= e.Location[0] - e.XDistance && entity.Value.Location[0] <= e.Location[0] + e.XDistance && entity.Value.Location[1] >= e.Location[1] - e.YDistance && entity.Value.Location[1] <= e.Location[1] + e.YDistance)
+                {
+                    nearbyEntities[entity.Key] = (int[])entity.Value.Location.Clone();
+                }
+            }
+
+            return nearbyEntities;
+        }
+
+        public virtual IEntity GetAtLocation(object sender, GetAtLocationEventArgs e)
+        {
+            return Entities[(string)Grid.GetValue(e.AtLocation)];
+        }
+
+
+        //- Operation methods
         public bool ShowArea(IPlayer player, string entryPoint = "deafult")// Dictionary<Keys, Tuple<ColisionResponce, string[]>> playerActions, string entryPoint = "deafult")
         {
             if (EntryPoints == null)
@@ -458,7 +468,7 @@ namespace GridEngine.Areas
 
 
 
-        //- Events
+    //- Events
         public event EntityCollisionEventHandler EntityCollision;
 
         protected virtual void OnRaiseEntityCollision(EntityCollisionEventArgs e)
@@ -468,7 +478,7 @@ namespace GridEngine.Areas
 
         public event KeyPressEventHandler KeyPress;
 
-        public virtual void OnRaiseKeyPress(KeyPressEventArgs e)
+        protected virtual void OnRaiseKeyPress(KeyPressEventArgs e)
         {
             KeyPress?.Invoke(this, e);
         }
