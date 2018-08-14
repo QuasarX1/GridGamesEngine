@@ -23,7 +23,78 @@ namespace GridEngine.Entities
 
         public MobileEntity(MobileEntity entity) : base(entity) { }
 
-        
+
+    //- Property control methods
+        public int[] GetAheadLoc()
+        {
+            switch (Facing)
+            {
+                case Direction.Up:
+                    return new int[] { Location[0], Location[1] + 1 };
+                case Direction.Right:
+                    return new int[] { Location[0] + 1, Location[1] };
+                case Direction.Down:
+                    return new int[] { Location[0], Location[1] - 1 };
+                case Direction.Left:
+                    return new int[] { Location[0] - 1, Location[1] };
+                default:
+                    return null;
+            }
+        }
+
+        public int[] GetBehindLoc()
+        {
+            switch (Facing)
+            {
+                case Direction.Up:
+                    return new int[] { Location[0], Location[1] - 1 };
+                case Direction.Right:
+                    return new int[] { Location[0] - 1, Location[1] };
+                case Direction.Down:
+                    return new int[] { Location[0], Location[1] + 1 };
+                case Direction.Left:
+                    return new int[] { Location[0] + 1, Location[1] };
+                default:
+                    return null;
+            }
+        }
+
+        public int[] GetLeftLoc()
+        {
+            switch (Facing)
+            {
+                case Direction.Up:
+                    return new int[] { Location[0] - 1, Location[1] };
+                case Direction.Right:
+                    return new int[] { Location[0], Location[1] + 1 };
+                case Direction.Down:
+                    return new int[] { Location[0] + 1, Location[1] };
+                case Direction.Left:
+                    return new int[] { Location[0], Location[1] - 1 };
+                default:
+                    return null;
+            }
+        }
+
+        public int[] GetRightLoc()
+        {
+            switch (Facing)
+            {
+                case Direction.Up:
+                    return new int[] { Location[0] + 1, Location[1] };
+                case Direction.Right:
+                    return new int[] { Location[0], Location[1] - 1 };
+                case Direction.Down:
+                    return new int[] { Location[0] - 1, Location[1] };
+                case Direction.Left:
+                    return new int[] { Location[0], Location[1] + 1 };
+                default:
+                    return null;
+            }
+        }
+
+
+
     //- Operation methods
         public bool Move(int[] newLocation)
         {            

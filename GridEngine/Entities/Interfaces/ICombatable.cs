@@ -20,19 +20,25 @@ namespace GridEngine.Entities
 
 
 
-        //- Methods
-        bool TryAttack(double dammage);
-
+    //- Property control methods
         bool Attacked(object sender, AttackedEventArgs e);
 
+        void TryUpdateHP(object sender, UpdateHPEventArgs e);
 
 
-        //- Events
+    //- Operation methods
+        bool TryAttack(double dammage);
+
+
+
+    //- Events
         event AttackEventHandler Attack;
+
+        event UpdateHPEventHandler UpdateHP;
     }
 
 
-    public delegate IEntity AttackEventHandler(object sender, AttackEventArgs e);
+    public delegate bool AttackEventHandler(object sender, AttackEventArgs e);
 
     public class AttackEventArgs : EventArgs
     {
@@ -45,6 +51,23 @@ namespace GridEngine.Entities
             AtLocation = location;
 
             RawDammage = rawDammage;
+        }
+    }
+
+
+    public delegate void UpdateHPEventHandler(object sender, UpdateHPEventArgs e);
+
+    public class UpdateHPEventArgs : EventArgs
+    {
+        public double Ammount { get; private set; }
+
+        public double Multyplyer { get; private set; }
+
+        public UpdateHPEventArgs(double ammount, double multyplyer = 1)
+        {
+            Ammount = ammount;
+
+            Multyplyer = multyplyer;
         }
     }
 }

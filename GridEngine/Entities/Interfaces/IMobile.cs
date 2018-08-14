@@ -16,6 +16,13 @@ namespace GridEngine.Entities
 
 
 
+    //- Property control methods
+        int[] GetAheadLoc();
+        int[] GetBehindLoc();
+        int[] GetLeftLoc();
+        int[] GetRightLoc();
+
+
     //- Operation methods
         bool Move(int[] newLocation);
 
