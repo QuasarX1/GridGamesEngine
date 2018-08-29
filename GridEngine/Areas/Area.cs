@@ -23,6 +23,8 @@ namespace GridEngine.Areas
 
         public Tuple<int[], int[]> NextUpdate { get { return Updates.Dequeue(); } }
 
+        public Tuple<int[], int[]> PeekNextUpdate { get { return (((ICollection<Tuple<int[], int[]>>)Updates).Count != 0) ? Updates.Peek() : null; } }
+
         public Dictionary<string, int[]> EntryPoints { get; protected set; }
 
         public string EmptySpaceImage { get; protected set; }
@@ -353,7 +355,7 @@ namespace GridEngine.Areas
         }
 
 
-        //- Operation methods
+    //- Operation methods
         public bool ShowArea(IPlayer player, string entryPoint = "deafult")// Dictionary<Keys, Tuple<ColisionResponce, string[]>> playerActions, string entryPoint = "deafult")
         {
             if (EntryPoints == null)

@@ -19,9 +19,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Menus\" />
-    <Folder Include="Structures\" />
-  </ItemGroup>
-
 </Project>

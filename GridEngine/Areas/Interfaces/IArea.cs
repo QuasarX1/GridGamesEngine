@@ -20,6 +20,8 @@ namespace GridEngine.Areas
 
         Tuple<int[], int[]> NextUpdate { get; }
 
+        Tuple<int[], int[]> PeekNextUpdate { get; }
+
         Dictionary<string, int[]> EntryPoints { get; }
 
         string EmptySpaceImage { get; }

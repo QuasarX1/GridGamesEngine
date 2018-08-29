@@ -5,11 +5,7 @@
     xmlns="GridEngine"
     xmlns:mstns="GridEngine"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
->  
-  <xs:complexType name="image">
-    <xs:attribute name="name" type="xs:string" use="required" />
-  </xs:complexType>
-
+>
   <xs:complexType name="entity_base">
     <xs:sequence>
       <xs:element name="image" type="image" />
@@ -68,7 +64,7 @@
     </xs:complexContent>
   </xs:complexType>
   
-  <xs:complexType name="user_entity">
+  <xs:complexType name="player">
     <xs:complexContent>
       <xs:extension base="entity_base">
         <xs:sequence>
@@ -83,6 +79,9 @@
                   
                     <xs:attribute name="key" type="xs:string" use="required" />
                     <xs:attribute name="method" type="xs:string" use="required" />
+                    
+                    <xs:attribute name="type" type="xs:string" fixed="Player" use="required" />
+                    <xs:attribute name="name" type="xs:string" fixed="Player" use="required" />
                   </xs:complexType>
                 </xs:element>
               </xs:sequence>
@@ -92,10 +91,49 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  
+  
+   
+  <xs:complexType name="menu">
+    <xs:sequence>
+      <xs:element name="menu" type="sub_menu" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="menu_option" type="menu_option" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    
+    <xs:attribute name="title" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  <xs:complexType name="sub_menu">
+    <xs:complexContent>
+      <xs:extension base="menu">
+        <xs:attribute name="text" type="xs:string" use="required" />
+        <xs:attribute name="image" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="menu_option">
+    <xs:sequence>
+      <xs:element name="option" type="string_data" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    
+    <xs:attribute name="current_index" type="xs:integer" use ="required" />
+    <xs:attribute name="data_key" type="xs:string" use="required" />
+    <xs:attribute name="text" type="xs:string" use="required" />
+    <xs:attribute name="image" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  
 
   <xs:complexType name="string_data">
     <xs:attribute name="data" type="xs:string" use="required" />
   </xs:complexType>
+  
+  <xs:complexType name="image">
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  
   
   <xs:element name="game">
     <xs:complexType>
@@ -157,20 +195,7 @@
           </xs:complexType>
         </xs:element>
         
-        <xs:element name="player" minOccurs="1" maxOccurs="1">
-          <xs:complexType>
-            <xs:complexContent>
-                <xs:restriction base="user_entity">
-                  <xs:sequence>
-                    
-                  </xs:sequence>
-                  
-                  <xs:attribute name="type" type="xs:string" fixed="Player" use="required" />
-                  <xs:attribute name="name" type="xs:string" fixed="Player" use="required" />
-                </xs:restriction>
-              </xs:complexContent>
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="player" type="player" minOccurs="1" maxOccurs="1" />
         
         <xs:element name="image_files">
           <xs:complexType>
@@ -184,10 +209,52 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+
+        <xs:element name="saves">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="save" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="modified_areas">
+                      
+                    </xs:element>
+                    
+                    <xs:element name="modified_player">
+                      
+                    </xs:element>
+                    
+                    <xs:element name="start_location">
+                      <xs:complexType>
+                        <xs:attribute name="area" type="xs:string" use="required" />
+                        <xs:attribute name="entry_point" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            
+            <xs:attribute name="max_saves" type="xs:integer" use="required" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="menus">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="main_menu" type="menu" />
+              
+              <xs:element name="pause_menu" type="menu" />
+            
+              <xs:element name="menu" type="menu" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:sequence>
 
-      <xs:attribute name="name" type="xs:string" />
+      <xs:attribute name="name" type="xs:string" use="required" />
     </xs:complexType>
   </xs:element>
 </xs:schema>
-

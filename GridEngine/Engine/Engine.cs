@@ -9,7 +9,8 @@ using GridEngine.Areas;
 using GridEngine.Deligates;
 using GridEngine.Entities;
 using GridEngine.Enums;
-//using GridEngine.Structures;
+using GridEngine.Structures;
+using GridEngine.Menus;
 using static GridEngine.Enums.InputKeys;
 
 namespace GridEngine.Engine
@@ -17,6 +18,7 @@ namespace GridEngine.Engine
     public sealed class Engine
     {
     //- Fields and Properties
+        public IGameHost Host { get; private set; }
         public string Name { get; private set; }
 
         private XmlDocument GameData;
@@ -24,6 +26,14 @@ namespace GridEngine.Engine
         public Dictionary<string, IArea> Areas { get; private set; }
 
         public IArea ActiveArea { get; private set; }
+
+        public Dictionary<string, IRootMenu> Menus { get; private set; }
+
+        public IMainMenu MainMenu { get; private set; }
+
+        public IRootMenu ActiveMenuRoot { get; private set; }
+
+        public IMenu ActiveMenu { get; private set; }
 
         public IPlayer Player { get; private set; }
 
@@ -33,12 +43,16 @@ namespace GridEngine.Engine
 
         public Dictionary<string, string> Images { get; private set; }
 
+        public static Dictionary<string, StaticData> StaticDataStore;//TODO: add into xml and read in constructors of objects
+
 
 
     //- Constructors
         // use host's other events to pause/resume ect...
         public Engine(XmlDocument gameData, IGameHost host)
         {
+            Host = host;
+
         //- Validate the XML document
             GameData = gameData;
             GameData.Schemas.Add(null, "https://raw.githubusercontent.com/QuasarX1/GridGamesEngine/master/GridEngine/GridGamesData.xsd");
@@ -219,15 +233,26 @@ namespace GridEngine.Engine
             ActiveArea.ShowArea((IPlayer)Player.Clone(), entryPoint);//, Actions, entryPoint);
         }
 
-        public void OpenMenu()
+        public void OpenMenu(string menuName)
         {
             ActiveArea.Pause();// Pause area
-            // Open menu
+
+            ActiveMenuRoot = Menus[menuName];// Open menu
+
+            NavigateMenu(ActiveMenuRoot);
+        }
+
+        public void NavigateMenu(IMenu nextMenu)// Event handler
+        {
+
         }
 
         public void CloseMenu()
         {
-            // change to event handeler
+            ActiveMenu = null;
+
+            ActiveMenuRoot = null;
+
             ActiveArea.Resume();// Resume area
         }
 
